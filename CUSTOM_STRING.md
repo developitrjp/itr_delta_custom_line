@@ -1,6 +1,6 @@
-# ITR DELTA2 — Custom row strings
+# ITR DELTA — Custom row strings
 
-How to write the text of the **Custom** rows of the ITR DELTA2 Garmin watch face.
+How to write the text of the **Custom** rows of the ITR DELTA Garmin watch face.
 
 Each of the 9 rows between the fixed top label (`ITR DELTA`) and the fixed bottom label (`-<VERSION>-`) shows the text of its own setting `Custom1`..`Custom9`. Open Garmin Connect > the watch face > Settings and type the string into the field. If a new setting does not appear, fully close and reopen Garmin Connect.
 
@@ -117,9 +117,9 @@ One normal character is 5x7 dots in one cell. `(WIDE, text)` stretches every cha
 
 ## Characters that can be shown
 
-`0-9`, `A-Z` (all letters), space, and `: - % . / + ° ( ) , ! ? = ' * # < > _`. Anything else (including `$` and `\` themselves, `&`, `@`, `[`, `]`, `{` `}` as text, non-ASCII except `°`) is shown as a blank. Lower case letters are converted to upper case. Use replacements such as `°` for `deg` or `+` for `&`. (The fixed bottom label of DELTA2 uses a lowercase `p` glyph, e.g. `V01p0`; it exists only there, a `p` typed in a Custom string is shown as `P`.)
+`0-9`, `A-Z` (all letters), space, and `: - % . / + ° ( ) , ! ? = ' * # < > _`. Anything else (including `$` and `\` themselves, `&`, `@`, `[`, `]`, `{` `}` as text, non-ASCII except `°`) is shown as a blank. Lower case letters are converted to upper case. Use replacements such as `°` for `deg` or `+` for `&`. (The fixed bottom label of DELTA uses a lowercase `p` glyph, e.g. `V01p0`; it exists only there, a `p` typed in a Custom string is shown as `P`.)
 
-## Examples (ITR DELTA2; sample 12:32:05 JST, BB 74, HR 72, RHR 58)
+## Examples (ITR DELTA; sample 12:32:05 JST, BB 74, HR 72, RHR 58)
 
 | Setting (chars) | String | Display |
 |---|---|---|
@@ -140,11 +140,11 @@ One normal character is 5x7 dots in one cell. `(WIDE, text)` stretches every cha
 | Custom9 (11) | `BB$\|(GAUGE, 8, $B)` | `BB` + 1 blank + 8-character Body Battery bar |
 | Custom9 (11) | `(BIG, $3A)` | acts as WIDE: battery % in 3 digits = 6 cells |
 
-Defaults of ITR DELTA2: Custom1 `GMT $02g:$02n`, Custom2 `BAT$|(GAUGE, 8, $A)`, Custom3 `$W $Y-$02M-$02D`, Custom4 `(BIG, $02h:$02m)`, Custom5 `$|:$02s`, Custom6 `HR $H$|RHR $R`, Custom7 `HR(GRAPH, 12, $H)`, Custom8 `STP$|$S`, Custom9 `BB$|(GAUGE, 8, $B)`.
+Defaults of ITR DELTA: Custom1 `GMT $02g:$02n`, Custom2 `BAT$|(GAUGE, 8, $A)`, Custom3 `$W $Y-$02M-$02D`, Custom4 `(BIG, $02h:$02m)`, Custom5 `$|:$02s`, Custom6 `HR $H$|RHR $R`, Custom7 `HR(GRAPH, 12, $H)`, Custom8 `STP$|$S`, Custom9 `BB$|(GAUGE, 8, $B)`.
 
 ## Support
 
-If you find ITR DELTA2 useful, you can support its development: [Buy Me a Coffee](https://buymeacoffee.com/develop.itr.jp)
+If you find ITR DELTA useful, you can support its development: [Buy Me a Coffee](https://buymeacoffee.com/develop.itr.jp)
 
 ## License
 
