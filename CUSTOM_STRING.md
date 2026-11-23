@@ -140,7 +140,11 @@ One normal character is 5x7 dots in one cell. `(WIDE, text)` stretches every cha
 | Custom9 (11) | `BB$\|(GAUGE, 8, $B)` | `BB` + 1 blank + 8-character Body Battery bar |
 | Custom9 (11) | `(BIG, $3A)` | acts as WIDE: battery % in 3 digits = 6 cells |
 
-Defaults of ITR DELTA2: Custom1 `GMT $02g:$02n`, Custom2 `BAT$|(GAUGE, 8, $A)`, Custom3 `$W $Y-$02M-$02D`, Custom4 `(BIG, $02h:$02m)`, Custom5 `$|:$02s`, Custom6 `HR $H$|RHR $R`, Custom7 `HR(GRAPH, 12, $H)`, Custom8 `STP$|$S`, Custom9 `BB$|(GAUGE, 8, $B)` (the current ones are in `resources/settings/properties.xml`).
+Defaults of ITR DELTA2: Custom1 `GMT $02g:$02n`, Custom2 `BAT$|(GAUGE, 8, $A)`, Custom3 `$W $Y-$02M-$02D`, Custom4 `(BIG, $02h:$02m)`, Custom5 `$|:$02s`, Custom6 `HR $H$|RHR $R`, Custom7 `HR(GRAPH, 12, $H)`, Custom8 `STP$|$S`, Custom9 `BB$|(GAUGE, 8, $B)`.
+
+## Support
+
+If you find ITR DELTA2 useful, you can support its development: [Buy Me a Coffee](https://buymeacoffee.com/develop.itr.jp)
 
 ## License
 
