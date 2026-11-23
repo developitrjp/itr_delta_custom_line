@@ -2,7 +2,7 @@
 
 How to write the text of the **Custom** rows of the ITR DELTA2 Garmin watch face.
 
-Each of the 9 rows between the fixed top label (`ITR DELTA`) and the fixed bottom label (`-<VERSION>-`) shows the text of its own setting `Custom1`..`Custom9`. Open Garmin Connect > the watch face > Settings and type the string into the field. If a new setting does not appear, fully close and reopen Garmin Connect. The old ITR DELTA (8 rows, `Custom1`..`Custom8`) uses the same syntax except `$a`, `(WIDE, ...)` and `(BIG, ...)`.
+Each of the 9 rows between the fixed top label (`ITR DELTA`) and the fixed bottom label (`-<VERSION>-`) shows the text of its own setting `Custom1`..`Custom9`. Open Garmin Connect > the watch face > Settings and type the string into the field. If a new setting does not appear, fully close and reopen Garmin Connect.
 
 In the tables below, a displayed text is shown for a sample moment; blanks matter, so count characters carefully.
 
@@ -15,7 +15,6 @@ In the tables below, a displayed text is shown for a sample moment; blanks matte
 - Text shorter than the row is centred; text longer than the row is cut on the right.
 - Custom9 is the last Custom row (BIG acts as WIDE there).
 - AOD (always-on low power): rows that contain a time code (`$h $k $m $g $n $a`) are shown as outlines; other rows stay dark.
-- Old ITR DELTA: Row1..Row8 = 9 / 12 / 14 / 9 (large) / 9 (large) / 14 / 12 / 9 characters, and a row shows its Custom string only when its kind is set to Custom.
 
 ## Syntax
 
@@ -31,8 +30,8 @@ In the tables below, a displayed text is shown for a sample moment; blanks matte
 | `$\|` | flexible blank: takes all spare characters of the row (several share them, first ones get the remainder) |
 | `(GAUGE, L, $X [, lo, hi])` | bar gauge of L characters, lo..hi = empty..full |
 | `(GRAPH, L, $X [, hours])` | history graph of L characters (5 L columns) |
-| `(WIDE, text)` | DELTA2 only: text in double-width characters |
-| `(BIG, text)` | DELTA2 only: text in double-width AND double-height characters (2x2 cells), spanning this row and the row below |
+| `(WIDE, text)` | text in double-width characters |
+| `(BIG, text)` | text in double-width AND double-height characters (2x2 cells), spanning this row and the row below |
 | `$c` (c not a code) | the character c itself |
 
 Rules:
@@ -58,7 +57,7 @@ Values are read in the background one at a time, so a just-changed setting takes
 | R | resting heart rate (today) | 10 min |
 | A | watch battery % | every update |
 | W | weekday MON..SUN (text, not usable in expressions) | every update |
-| a | **AM / PM** (DELTA2 only): 12 h watch setting -> `AM` (00:00-11:59) or `PM` (12:00-23:59); 24 h setting -> two blanks. Always 2 characters (`$5a` pads to 5, right aligned). Text, so not usable in `{expr}`, GAUGE or GRAPH. Counts as a time code (AOD) | every update |
+| a | **AM / PM**: 12 h watch setting -> `AM` (00:00-11:59) or `PM` (12:00-23:59); 24 h setting -> two blanks. Always 2 characters (`$5a` pads to 5, right aligned). Text, so not usable in `{expr}`, GAUGE or GRAPH. Counts as a time code (AOD) | every update |
 | h | hour, 12 or 24 h as the watch is set | every update |
 | k | hour, always 24 h (use this for time-zone math) | every update |
 | m / s | minute / second | every update |
@@ -104,7 +103,7 @@ Example: `$02h:$02m $a` -> `12:32 PM` (12 h) or `12:32` followed by 3 blanks (24
 - The keyword is case insensitive; spaces around commas are fine.
 - A `(` that is not a valid GAUGE / GRAPH / WIDE / BIG is shown as a normal `(` character.
 
-### WIDE and BIG (ITR DELTA2 only)
+### WIDE and BIG 
 
 One normal character is 5x7 dots in one cell. `(WIDE, text)` stretches every character to **2 cells wide** (10x7 dots, 1 row high), except `:` which stays 1 cell. `(BIG, text)` stretches every character to **2 cells wide and 2 rows high** (10x14 dots); `:` is 1 cell wide and 2 rows high.
 
@@ -142,20 +141,6 @@ One normal character is 5x7 dots in one cell. `(WIDE, text)` stretches every cha
 | Custom9 (11) | `(BIG, $3A)` | acts as WIDE: battery % in 3 digits = 6 cells |
 
 Defaults of ITR DELTA2: Custom1 `GMT $02g:$02n`, Custom2 `BAT$|(GAUGE, 8, $A)`, Custom3 `$W $Y-$02M-$02D`, Custom4 `(BIG, $02h:$02m)`, Custom5 `$|:$02s`, Custom6 `HR $H$|RHR $R`, Custom7 `HR(GRAPH, 12, $H)`, Custom8 `STP$|$S`, Custom9 `BB$|(GAUGE, 8, $B)` (the current ones are in `resources/settings/properties.xml`).
-
-## Old ITR DELTA examples (rows 9 / 12 / 14 characters)
-
-| Row (chars) | String | Display (sample) |
-|---|---|---|
-| 12 | `CUSTOM $03B%` | `CUSTOM 074%` |
-| 9 | `UK $02{$k - 9}:$02m` | `UK 03:32` at 12:32 JST |
-| 12 | `NY$\|$02{($k - 14) % 24}:$02m` | `NY     22:32` at 12:32 JST |
-| 9 | `NY $02g:$02n` | `NY 22:32` with GMT offset set to UTC-5 |
-| 14 | `HPA $P$\|(GRAPH, 5, $P)` | `HPA 1013` + blanks + 5-character pressure graph |
-| 12 | `BB(GRAPH, 10, $B, 24)` | `BB` + 24 h Body Battery graph |
-| 9 | `SPO2$\|$O%` | `SPO2  96%` |
-| 14 | `$W $02D/$02M $02{$Y % 100}` | `TUE 17/11 26` |
-| 9 | `$3H/$3R` | ` 72/ 58` (current / resting HR) |
 
 ## License
 
