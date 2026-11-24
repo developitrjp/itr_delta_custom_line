@@ -7,6 +7,20 @@
 - Get it on Garmin Connect IQ: [ITR DELTA](https://apps.garmin.com/apps/4bc2191c-0fc0-4380-b7a0-36d3c6907dc3)
 - How to write the Custom rows: **[CUSTOM_STRING.md](CUSTOM_STRING.md)** (codes, gauges, graphs, WIDE / BIG, alignment, examples and the default settings)
 
+## Let an AI write your Custom settings
+
+You can give the manual to an AI assistant (Claude, ChatGPT, Gemini, ...) and ask it to design a row for you.
+
+1. Give the AI the manual: paste the whole text of [CUSTOM_STRING.md](CUSTOM_STRING.md), or give it the raw link `https://raw.githubusercontent.com/developitrjp/itr_delta_custom_line/main/CUSTOM_STRING.md` (some AIs cannot open links; then paste the text or attach the file).
+2. Say which row and what you want to see, for example:
+   - "Using this manual, write Custom3 (15 characters) for a row that shows New York time, e.g. NY 22:32."
+   - "Make Custom7 show a heart-rate graph and the pressure graph side by side."
+   - "Fill all nine rows with a design for running: big time, heart rate, steps and battery."
+3. Copy the string it gives you (from its code block) into the Custom setting of the watch face in Garmin Connect: Garmin Connect > the watch face > Settings > Custom1..Custom9. If a new setting does not appear, fully close and reopen Garmin Connect.
+4. Check the result on the watch. The AI cannot see your watch: if the row looks wrong, tell it what you see (and the row number) and ask it to fix the string. Time-zone rows depend on the GMT offset setting; AM/PM on the watch's 12 / 24 h setting.
+
+The manual contains a section "For AI assistants" with the rules the AI should follow (row widths, common mistakes, output format).
+
 This repository holds the manual only; the watch face source code is not published.
 
 ## Support

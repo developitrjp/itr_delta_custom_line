@@ -4,6 +4,24 @@ How to write the text of the **Custom** rows of the ITR DELTA Garmin watch face.
 
 Each of the 9 rows between the fixed top label (`ITR DELTA`) and the fixed bottom label (`-<VERSION>-`) shows the text of its own setting `Custom1`..`Custom9`. Open Garmin Connect > the watch face > Settings and type the string into the field. If a new setting does not appear, fully close and reopen Garmin Connect.
 
+## For AI assistants
+
+If you are an AI assistant asked to write a Custom setting from this manual, follow these rules.
+
+1. Ask (or infer) the **row number** (Custom1..Custom9) and use its width from the table below; the string must fit the row (text longer than the row is cut on the right).
+2. Answer with the string in a **code block** (copy-ready, one block per row), then the **expected display** for a sample moment (state the sample values), character by character, and the **character count** against the row width. Use code blocks so that `$` is not read as a math delimiter.
+3. The setting is typed into the phone setting field **as is**: do not escape anything. The flexible blank is the two characters `$|`, a dollar sign and a vertical bar (never `$\|`).
+4. Common mistakes to avoid:
+   - Codes are case sensitive: `$h` hour vs `$H` heart rate, `$m` minute vs `$M` month, `$a` AM/PM vs `$A` battery.
+   - `(GAUGE, L, $X, lo, hi)` and `(GRAPH, L, $X, hours)`: the **length L comes first**, then the code.
+   - GRAPH works only with H, P, O, B, I, and only the first 4 GRAPH items over all rows are drawn.
+   - Only the characters listed in "Characters that can be shown" appear; everything else (`&`, `@`, `[`, `]`, non-ASCII except `°`) is a blank. Lower case is shown as upper case.
+   - For time zones use `$g` `$n` `$z` (the face's GMT offset) or `$k` (24 h hour) in expressions, never `$h`; day changes are not handled.
+   - BIG uses the row below (its lower half replaces that row's cells), so keep the row below empty or outside the BIG's columns; in Custom9 (the last row) BIG acts as WIDE.
+   - A value is `--` when no data is available (e.g. SpO2 not measured yet).
+5. You cannot see the watch. Do not claim it looks right: give the expected display and the character count so that the user can check it, and say if something depends on a setting (12 / 24 h watch setting, GMT offset, units).
+6. Start from the **Examples** and the **Default settings** below and adapt them.
+
 In the tables below, a displayed text is shown for a sample moment; blanks matter, so count characters carefully.
 
 ## Rows and widths (characters = cells)
@@ -27,12 +45,13 @@ In the tables below, a displayed text is shown for a sample moment; blanks matte
 | `$wX` | right aligned in w characters, blank padded (`$3B` -> ` 74`) |
 | `$0wX` | zero padded (`$03B` -> `074`) |
 | `${expr}` / `$0w{expr}` / `{expr}` | integer expression, formatted the same way |
-| `$\|` | flexible blank: takes all spare characters of the row (several share them, first ones get the remainder) |
 | `(GAUGE, L, $X [, lo, hi])` | bar gauge of L characters, lo..hi = empty..full |
 | `(GRAPH, L, $X [, hours])` | history graph of L characters (5 L columns) |
 | `(WIDE, text)` | text in double-width characters |
 | `(BIG, text)` | text in double-width AND double-height characters (2x2 cells), spanning this row and the row below |
 | `$c` (c not a code) | the character c itself |
+
+The flexible blank is written with two characters: a dollar sign and a vertical bar, `$|` (shown in a list here because the vertical bar breaks Markdown tables). It takes all spare characters of the row (several share them, first ones get the remainder). Example: `NY$|$02{($k - 14) % 24}:$02m`.
 
 Rules:
 - A value longer than its width keeps all its digits (never truncated). No value -> `--` (padded to the width).
@@ -121,24 +140,22 @@ One normal character is 5x7 dots in one cell. `(WIDE, text)` stretches every cha
 
 ## Examples (ITR DELTA; sample 12:32:05 JST, BB 74, HR 72, RHR 58)
 
-| Setting (chars) | String | Display |
-|---|---|---|
-| Custom1 (11) | `CUSTOM $03B%` | `CUSTOM 074%` (11 chars, fills the row) |
-| Custom2 (13) | `UK $02{$k - 9}:$02m` | `UK 03:32` centred (8 chars) |
-| Custom3 (15) | `NY$\|$02{($k - 14) % 24}:$02m` | `NY` + 8 blanks + `22:32` |
-| Custom3 (15) | `GMT $02g:$02n:$02z` | `GMT 03:32:05` centred (GMT offset = UTC+0) |
-| Custom3 (15) | `IST$\|$02g:$02n` | `IST` + 7 blanks + `09:02` (GMT offset UTC+5:30) |
-| Custom3 (15) | `$02h:$02m $a` | `12:32 PM` centred (12 h) / `12:32` + 3 blanks (24 h) |
-| Custom3 (15) | `$W $Y-$02M-$02D` | `TUE 2026-11-17` |
-| Custom4 (15) | `(BIG, $02h:$02m)` | big `12:32`, 9 cells wide, centred; upper half here, lower half in Custom5's row |
-| Custom5 (15) | `$\|:$02s` | `:05` at the right end (cells 12..14), clear of the BIG's columns 3..11 |
-| Custom4 (15) | `(WIDE, $02m:$02s)` | `32:05` double width, 9 cells, 1 row high |
-| Custom6 (15) | `HR $H$\|RHR $R` | `HR 72` + blanks + `RHR 58` |
-| Custom7 (15) | `HR(GRAPH, 12, $H)` | `HR` + 12-character heart-rate graph (60 columns = 12 h) |
-| Custom2 (13) | `T$\|(GAUGE, 10, $T)` | `T` + 2 blanks + 10-character temperature bar |
-| Custom8 (13) | `STP$\|$S` | `STP` + blanks + steps |
-| Custom9 (11) | `BB$\|(GAUGE, 8, $B)` | `BB` + 1 blank + 8-character Body Battery bar |
-| Custom9 (11) | `(BIG, $3A)` | acts as WIDE: battery % in 3 digits = 6 cells |
+- Custom1 (11): `CUSTOM $03B%`  ->  `CUSTOM 074%` (11 chars, fills the row)
+- Custom2 (13): `UK $02{$k - 9}:$02m`  ->  `UK 03:32` centred (8 chars)
+- Custom3 (15): `NY$|$02{($k - 14) % 24}:$02m`  ->  `NY` + 8 blanks + `22:32`
+- Custom3 (15): `GMT $02g:$02n:$02z`  ->  `GMT 03:32:05` centred (GMT offset = UTC+0)
+- Custom3 (15): `IST$|$02g:$02n`  ->  `IST` + 7 blanks + `09:02` (GMT offset UTC+5:30)
+- Custom3 (15): `$02h:$02m $a`  ->  `12:32 PM` centred (12 h) / `12:32` + 3 blanks (24 h)
+- Custom3 (15): `$W $Y-$02M-$02D`  ->  `TUE 2026-11-17`
+- Custom4 (15): `(BIG, $02h:$02m)`  ->  big `12:32`, 9 cells wide, centred; upper half here, lower half in Custom5's row
+- Custom5 (15): `$|:$02s`  ->  `:05` at the right end (cells 12..14), clear of the BIG's columns 3..11
+- Custom4 (15): `(WIDE, $02m:$02s)`  ->  `32:05` double width, 9 cells, 1 row high
+- Custom6 (15): `HR $H$|RHR $R`  ->  `HR 72` + blanks + `RHR 58`
+- Custom7 (15): `HR(GRAPH, 12, $H)`  ->  `HR` + 12-character heart-rate graph (60 columns = 12 h)
+- Custom2 (13): `T$|(GAUGE, 10, $T)`  ->  `T` + 2 blanks + 10-character temperature bar
+- Custom8 (13): `STP$|$S`  ->  `STP` + blanks + steps
+- Custom9 (11): `BB$|(GAUGE, 8, $B)`  ->  `BB` + 1 blank + 8-character Body Battery bar
+- Custom9 (11): `(BIG, $3A)`  ->  acts as WIDE: battery % in 3 digits = 6 cells
 
 Default settings of ITR DELTA:
 
