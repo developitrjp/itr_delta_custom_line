@@ -38,6 +38,7 @@
 <header>
   <h1>ITR DELTA - Custom row checker</h1>
   <p>Type the Custom strings and see roughly how the watch face will show them. Everything runs in this page; nothing is sent anywhere.</p>
+  <p><strong>Share your design:</strong> everything you type here is stored in this page's address (the part after #). Press "Copy share link" (or copy the URL from the address bar) to bookmark it or send it to someone, and they will see the same rows, alignment and colour.</p>
   <p>Syntax: <a href="https://github.com/developitrjp/itr_delta_custom_line/blob/main/CUSTOM_STRING.md">CUSTOM_STRING.md</a> &middot; Watch face: <a href="https://apps.garmin.com/apps/4bc2191c-0fc0-4380-b7a0-36d3c6907dc3">Garmin Connect IQ</a></p>
 </header>
 <main>
@@ -73,6 +74,7 @@
       <button id="b_def">Default settings</button>
       <span id="presets" style="display:contents"></span>
       <button id="b_clear">Clear all</button>
+      <button id="b_share" title="Copy the address of this page with your design in it">Copy share link</button>
     </div>
     <div id="rows"></div>
     <p class="hint">Alignment: where the text sits when it is shorter than the row. Text longer than the row is cut on the right. This is a quick check, not the exact watch rendering (dot sizes and spacing differ a little, and the watch fills in sensor values every few minutes). The strings are saved in this page's address, so you can bookmark or share it.</p>
@@ -480,6 +482,13 @@ PRESETS.forEach(pr => {
   b.onclick = () => { setAll(pr.customs, pr.aligns); val("colour").value = PRESET_COLOUR[pr.key]; update(); };
   document.getElementById("presets").appendChild(b);
 });
+document.getElementById("b_share").onclick = () => {
+  const b = document.getElementById("b_share");
+  update();
+  const url = location.href, done = ok => { b.textContent = ok ? "Link copied!" : "Copy the address bar"; setTimeout(() => { b.textContent = "Copy share link"; }, 2000); };
+  const fallback = () => { const t = document.createElement("textarea"); t.value = url; document.body.appendChild(t); t.select(); let ok = false; try { ok = document.execCommand("copy"); } catch (e) { } document.body.removeChild(t); done(ok); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(() => done(true), fallback); else fallback();
+};
 document.getElementById("b_clear").onclick = () => { setAll([], DEFAULT_ALIGN.map(() => 1)); update(); };
 document.querySelectorAll("input, select").forEach(e => { e.addEventListener("input", update); e.addEventListener("change", update); });
 let loaded = false;
