@@ -58,7 +58,7 @@ In the tables below, a displayed text is shown for a sample moment; blanks matte
 The flexible blank is written with two characters: a dollar sign and a vertical bar, `$|` (shown in a list here because the vertical bar breaks Markdown tables). It takes all spare characters of the row (several share them, first ones get the remainder). Example: `NY$|$02{($k - 14) % 24}:$02m`.
 
 Rules:
-- A value longer than its width keeps all its digits (never truncated). No value -> `--` (padded to the width).
+- With a width the value never grows past it: larger values stop at all 9s (`$04S` at 12000 steps shows `9999`; a minus sign takes one column). Without a width all digits are shown. No value -> `--` (padded to the width).
 - Negative numbers with zero padding: `$03{$T}` at -5 -> `-05`.
 - `$s` and `$z` (seconds) are blank during MIP sleep (fenix etc. update once a minute).
 - At most 64 characters of the setting are read.

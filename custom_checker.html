@@ -267,6 +267,8 @@ function codeNum(c, t) {
 }
 function fmtNum(v, w, zero) {
   if (w <= 0) return String(v);
+  const lim = Math.pow(10, v < 0 ? w - 1 : w) - 1;   // a fixed width never grows: stop at all 9s
+  v = Math.max(-lim, Math.min(lim, v));
   let s = String(Math.abs(v));
   if (zero) { s = s.padStart(v < 0 ? w - 1 : w, "0"); return (v < 0 ? "-" : "") + s; }
   return (v < 0 ? "-" + s : s).padStart(w, " ");
