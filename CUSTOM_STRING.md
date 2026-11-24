@@ -1,5 +1,7 @@
 # ITR DELTA — Custom row strings
 
+English | [日本語](CUSTOM_STRING_ja.md)
+
 How to write the text of the **Custom** rows of the ITR DELTA Garmin watch face. Get the watch face on [Garmin Connect IQ](https://apps.garmin.com/apps/4bc2191c-0fc0-4380-b7a0-36d3c6907dc3).
 
 Each of the 9 rows between the fixed top label (`ITR DELTA`) and the fixed bottom label (`-<VERSION>-`) shows the text of its own setting `Custom1`..`Custom9`. Open Garmin Connect > the watch face > Settings and type the string into the field. If a new setting does not appear, fully close and reopen Garmin Connect.
