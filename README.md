@@ -25,6 +25,8 @@ The manual contains a section "For AI assistants" with the rules the AI should f
 
 **[Custom row checker](https://developitrjp.github.io/itr_delta_custom_line/custom_checker.html)**: a single web page (`custom_checker.html`, works offline too: download it and open it in a browser) where you type the nine Custom strings, pick the alignment and see roughly how the watch face will show them, with sample values for time, heart rate, steps and so on. It also warns about strings that are too long, characters that cannot be shown and more than 4 GRAPH items. It is a quick check, not the exact watch rendering.
 
+Share your design: everything you type is stored in the page address, so **Copy share link** gives a URL that opens the same design for anyone. **Download PNG** saves the preview, and **Post to Discussions** opens a new post in the [Discussions](https://github.com/developitrjp/itr_delta_custom_line/discussions) of this repository with your design filled in (attach the PNG there). Look through the posts for ideas, or share your own.
+
 This repository holds the manual only; the watch face source code is not published.
 
 ## Support
