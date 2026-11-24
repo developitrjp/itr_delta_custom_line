@@ -22,6 +22,8 @@ If you are an AI assistant asked to write a Custom setting from this manual, fol
 5. You cannot see the watch. Do not claim it looks right: give the expected display and the character count so that the user can check it, and say if something depends on a setting (12 / 24 h watch setting, GMT offset, units).
 6. Start from the **Examples** and the **Default settings** below and adapt them.
 
+You can try strings in the [Custom row checker](https://developitrjp.github.io/itr_delta_custom_line/custom_checker.html) (a web page that shows roughly how the rows will look).
+
 In the tables below, a displayed text is shown for a sample moment; blanks matter, so count characters carefully.
 
 ## Rows and widths (characters = cells)
