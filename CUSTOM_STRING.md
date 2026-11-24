@@ -106,7 +106,7 @@ Example: `$02h:$02m $a` -> `12:32 PM` (12 h) or `12:32` followed by 3 blanks (24
 
 ### GAUGE
 
-`(GAUGE, L, value [, lo, hi])`: value is `$X` or `{expr}`. L = 1..14 characters, each character = 5 columns of bar. Default ranges when lo/hi are omitted:
+`(GAUGE, L, value [, lo, hi])`: value is `$X` or `{expr}`. L = 1..15 characters, each character = 5 columns of bar. Default ranges when lo/hi are omitted:
 
 | Code | Range |
 |---|---|

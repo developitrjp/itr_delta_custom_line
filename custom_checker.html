@@ -231,7 +231,7 @@ function funcTok(ch, a, b) {
   const name = f[0].toUpperCase();
   let L = numOf(f[1]);
   if (L === null || L < 1) return null;
-  L = Math.min(L, 14);
+  L = Math.min(L, 15);
   const vs = parseCustom(f[2]);
   if (vs.length !== 1 || !Array.isArray(vs[0])) return null;
   const v = vs[0];
