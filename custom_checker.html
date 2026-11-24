@@ -472,7 +472,7 @@ function update() {
   try { history.replaceState(null, "", "#" + encodeURIComponent(JSON.stringify([customs, al, val("colour").value]))); } catch (e) { }
 }
 function setAll(c, a) { inputs.forEach((i, k) => { i.value = c[k] || ""; }); aligns.forEach((s, k) => { s.value = a[k]; }); }
-document.getElementById("b_def").onclick = () => { setAll(DEFAULTS, DEFAULT_ALIGN); update(); };
+document.getElementById("b_def").onclick = () => { setAll(DEFAULTS, DEFAULT_ALIGN); val("colour").value = "0"; update(); };
 const PRESET_COLOUR = { c: "0", y: "1", r: "2", o: "3" };
 PRESETS.forEach(pr => {
   const b = document.createElement("button");
