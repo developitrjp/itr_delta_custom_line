@@ -12,9 +12,9 @@ In the tables below, a displayed text is shown for a sample moment; blanks matte
 |---|---|---|---|---|---|---|---|---|---|
 | chars | 11 | 13 | 15 | 15 | 15 | 15 | 15 | 13 | 11 |
 
-- Text shorter than the row is centred; text longer than the row is cut on the right.
+- Each row has its own alignment setting (`Align1`..`Align9`: Left / Centre / Right, default Centre). Text longer than the row is cut on the right, whatever the alignment. A `$|` (flexible blank) fills the row, so alignment makes no difference then.
 - Custom9 is the last Custom row (BIG acts as WIDE there).
-- AOD (always-on low power): rows that contain a time code (`$h $k $m $g $n $a`) are shown as outlines; other rows stay dark.
+- AOD (always-on low power): rows that contain a time code (`$h $k $m $a`; the GMT codes `$g $n $z` do not count, so a GMT row is dark in AOD) are shown as outlines; other rows stay dark.
 
 ## Syntax
 
@@ -96,7 +96,7 @@ Example: `$02h:$02m $a` -> `12:32 PM` (12 h) or `12:32` followed by 3 blanks (24
 
 ### GRAPH
 
-`(GRAPH, L, $X [, hours])`: only H (heart rate), P (pressure), O (SpO2), B (Body Battery) and I (watch sensor temperature) from the watch's sensor history (`$T` has no graph: there is no weather history). L characters = 5 L columns, 8 levels, scaled to the min..max of the shown range. Default 12 minutes per column (L = 5 -> 5 h, L = 10 -> 10 h); with `hours`, the whole graph covers that many hours (max 48; longer values are cut to 48). Refreshed every 5 min. Only the first 4 GRAPH items over all rows (top row first) read the sensor history; any further GRAPH is shown blank Do not use more than 4 GRAPH items.
+`(GRAPH, L, $X [, hours])`: only H (heart rate), P (pressure), O (SpO2), B (Body Battery) and I (watch sensor temperature) from the watch's sensor history (`$T` has no graph: there is no weather history). L characters = 5 L columns, 8 levels, scaled to the min..max of the shown range. Default 12 minutes per column (L = 5 -> 5 h, L = 10 -> 10 h); with `hours`, the whole graph covers that many hours (max 48; longer values are cut to 48). Refreshed every 5 min. Only the first 4 GRAPH items over all rows (top row first) read the sensor history; any further GRAPH is shown blank, so do not use more than 4 GRAPH items. Where the sensor records rarely (SpO2: about one sample an hour or less), the columns between samples are filled by a straight line between the neighbouring samples.
 
 ### GAUGE / GRAPH syntax notes
 
@@ -117,7 +117,7 @@ One normal character is 5x7 dots in one cell. `(WIDE, text)` stretches every cha
 
 ## Characters that can be shown
 
-`0-9`, `A-Z` (all letters), space, and `: - % . / + ° ( ) , ! ? = ' * # < > _`. Anything else (including `$` and `\` themselves, `&`, `@`, `[`, `]`, `{` `}` as text, non-ASCII except `°`) is shown as a blank. Lower case letters are converted to upper case. Use replacements such as `°` for `deg` or `+` for `&`. (The fixed bottom label of DELTA uses a lowercase `p` glyph, e.g. `V01p0`; it exists only there, a `p` typed in a Custom string is shown as `P`.)
+`0-9`, `A-Z` (all letters), space, and `: - % . / + ° ( ) , ! ? = ' * # < > _`. Anything else (including `$` and `\` themselves, `&`, `@`, `[`, `]`, `{` `}` as text, non-ASCII except `°`) is shown as a blank. Lower case letters are converted to upper case. Use replacements such as `°` for `deg` or `+` for `&`. (The fixed bottom label `-<VERSION>-` is always shown in upper case, too.)
 
 ## Examples (ITR DELTA; sample 12:32:05 JST, BB 74, HR 72, RHR 58)
 
@@ -140,7 +140,19 @@ One normal character is 5x7 dots in one cell. `(WIDE, text)` stretches every cha
 | Custom9 (11) | `BB$\|(GAUGE, 8, $B)` | `BB` + 1 blank + 8-character Body Battery bar |
 | Custom9 (11) | `(BIG, $3A)` | acts as WIDE: battery % in 3 digits = 6 cells |
 
-Defaults of ITR DELTA: Custom1 `GMT $02g:$02n`, Custom2 `BAT$|(GAUGE, 8, $A)`, Custom3 `$W $Y-$02M-$02D`, Custom4 `(BIG, $02h:$02m)`, Custom5 `$|:$02s`, Custom6 `HR $H$|RHR $R`, Custom7 `HR(GRAPH, 12, $H)`, Custom8 `STP$|$S`, Custom9 `BB$|(GAUGE, 8, $B)`.
+Default settings of ITR DELTA:
+
+| Setting | Default string | Alignment |
+|---|---|---|
+| Custom1 | ` $W $02M-$02D ` | Centre |
+| Custom2 | `GMT $02g:$02n` | Centre |
+| Custom3 | `$a (BIG, $02h:$02m)` | Left |
+| Custom4 | `$02s` | Right |
+| Custom5 | `(GAUGE, 12, $s, 0, 60)` | Right |
+| Custom6 | `BATT (GAUGE, 10, $A)` | Centre |
+| Custom7 | `AP(GRAPH, 5, $P) O2(GRAPH, 5, $O)` | Centre |
+| Custom8 | `STEP (GAUGE, 8, $S, 0, 10000)` | Centre |
+| Custom9 | `HR $03H__$03R` | Centre |
 
 ## Support
 
