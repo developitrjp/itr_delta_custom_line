@@ -71,6 +71,7 @@
       <label for="colour">Colour</label>
       <select id="colour"><option value="0">Cyan</option><option value="1">Yellow</option><option value="3">Orange</option><option value="2">Red</option></select>
       <button id="b_def">Default settings</button>
+      <span id="presets" style="display:contents"></span>
       <button id="b_clear">Clear all</button>
     </div>
     <div id="rows"></div>
@@ -81,6 +82,7 @@
 "use strict";
 const DOT_CHARS = "0123456789ABCDEFGHILMNOPRSTUW:-JKQVXYZ%./+°(),!?='*#<>abcdef_p ";
 const DOT_FONT = [[14, 17, 17, 17, 17, 17, 14], [4, 12, 4, 4, 4, 4, 4], [14, 17, 1, 14, 16, 16, 31], [14, 17, 1, 14, 1, 17, 14], [2, 6, 10, 18, 31, 2, 2], [31, 16, 16, 30, 1, 17, 14], [14, 17, 16, 30, 17, 17, 14], [31, 1, 2, 2, 4, 4, 4], [14, 17, 17, 14, 17, 17, 14], [14, 17, 17, 15, 1, 17, 14], [14, 17, 17, 31, 17, 17, 17], [30, 17, 17, 30, 17, 17, 30], [14, 17, 16, 16, 16, 17, 14], [30, 17, 17, 17, 17, 17, 30], [31, 16, 16, 30, 16, 16, 31], [31, 16, 16, 30, 16, 16, 16], [14, 17, 16, 23, 17, 17, 15], [17, 17, 17, 31, 17, 17, 17], [4, 4, 4, 4, 4, 4, 4], [16, 16, 16, 16, 16, 16, 31], [17, 27, 21, 17, 17, 17, 17], [17, 25, 25, 21, 19, 19, 17], [14, 17, 17, 17, 17, 17, 14], [30, 17, 17, 30, 16, 16, 16], [30, 17, 17, 30, 20, 18, 17], [14, 17, 16, 14, 1, 17, 14], [31, 4, 4, 4, 4, 4, 4], [17, 17, 17, 17, 17, 17, 14], [17, 17, 17, 21, 21, 21, 10], [0, 4, 4, 0, 4, 4, 0], [0, 0, 0, 14, 0, 0, 0], [7, 2, 2, 2, 2, 18, 12], [17, 18, 20, 24, 20, 18, 17], [14, 17, 17, 17, 21, 18, 13], [17, 17, 17, 17, 17, 10, 4], [17, 17, 10, 4, 10, 17, 17], [17, 17, 10, 4, 4, 4, 4], [31, 1, 2, 4, 8, 16, 31], [24, 25, 2, 4, 8, 19, 3], [0, 0, 0, 0, 0, 12, 12], [0, 1, 2, 4, 8, 16, 0], [0, 4, 4, 31, 4, 4, 0], [12, 18, 18, 12, 0, 0, 0], [2, 4, 8, 8, 8, 4, 2], [8, 4, 2, 2, 2, 4, 8], [0, 0, 0, 0, 12, 4, 8], [4, 4, 4, 4, 4, 0, 4], [14, 17, 1, 2, 4, 0, 4], [0, 0, 31, 0, 31, 0, 0], [12, 4, 8, 0, 0, 0, 0], [0, 4, 21, 14, 21, 4, 0], [10, 10, 31, 10, 31, 10, 10], [2, 4, 8, 16, 8, 4, 2], [8, 4, 2, 1, 2, 4, 8], [31, 17, 0, 0, 0, 17, 31], [31, 17, 16, 16, 16, 17, 31], [31, 17, 24, 24, 24, 17, 31], [31, 17, 28, 28, 28, 17, 31], [31, 17, 30, 30, 30, 17, 31], [31, 17, 31, 31, 31, 17, 31], [0, 0, 0, 0, 0, 0, 31], [0, 30, 17, 17, 30, 16, 16], [0, 0, 0, 0, 0, 0, 0]];
+const PRESETS = [{"file": "02_message.png", "label": "Message", "key": "o", "customs": ["THIS", "WATCHFACE IS", "EXTREMELY", "CUSTOMIZABLE", "", "ANY DESIGN", "IS POSSIBLE", "", ""], "aligns": [1, 1, 1, 1, 1, 1, 1, 1, 1]}, {"file": "03_world_time.png", "label": "World time", "key": "y", "customs": ["WORLD TIME", "LA$|$02{($k + 7) % 24}:$02m", "NY$|$02{($k + 10) % 24}:$02m", "LON$|$02{($k + 15) % 24}:$02m", "(BIG, $02h:$02m)", "", "TOKYO", "$Y-$02M-$02D", "$a"], "aligns": [1, 1, 1, 1, 1, 1, 1, 1, 1]}, {"file": "04_data.png", "label": "Gauges and graphs", "key": "c", "customs": ["(WIDE, $02h:$02m)", "BATT (GAUGE, 8, $A)", "STEP (GAUGE, 10, $S, 0, 10000)", "HR(GRAPH, 13, $H)", "AP(GRAPH, 13, $P)", "O2(GRAPH, 13, $O)", "BB(GRAPH, 13, $B)", "HR $H$|RHR $R", "CAL $C"], "aligns": [1, 1, 1, 1, 1, 1, 1, 1, 1]}, {"file": "05_sizes_align.png", "label": "Sizes and alignment", "key": "r", "customs": ["NORMAL", "(WIDE, WIDE)", "(BIG, BIG)", "", "LEFT", "CENTRE", "RIGHT", "$|:$02s", ""], "aligns": [1, 1, 1, 1, 0, 1, 2, 2, 1]}];
 const ROWS = [9, 11, 13, 15, 15, 15, 15, 15, 13, 11, 9];
 const NROWS = ROWS.length;
 const CUSTOM_MAX = 64;
@@ -471,6 +473,13 @@ function update() {
 }
 function setAll(c, a) { inputs.forEach((i, k) => { i.value = c[k] || ""; }); aligns.forEach((s, k) => { s.value = a[k]; }); }
 document.getElementById("b_def").onclick = () => { setAll(DEFAULTS, DEFAULT_ALIGN); update(); };
+const PRESET_COLOUR = { c: "0", y: "1", r: "2", o: "3" };
+PRESETS.forEach(pr => {
+  const b = document.createElement("button");
+  b.textContent = pr.label; b.title = "The same settings as the store screenshot " + pr.file;
+  b.onclick = () => { setAll(pr.customs, pr.aligns); val("colour").value = PRESET_COLOUR[pr.key]; update(); };
+  document.getElementById("presets").appendChild(b);
+});
 document.getElementById("b_clear").onclick = () => { setAll([], DEFAULT_ALIGN.map(() => 1)); update(); };
 document.querySelectorAll("input, select").forEach(e => { e.addEventListener("input", update); e.addEventListener("change", update); });
 let loaded = false;
