@@ -36,7 +36,7 @@ In the tables below, a displayed text is shown for a sample moment; blanks matte
 
 ## Syntax
 
-**The escape character is `$`** (since 11-21; Garmin Connect did not keep the backslash `\`). The backslash is still accepted with the same meaning, but always write `$`. A literal `$` is `$$`, which the font cannot show (blank).
+**The escape character is `$`.** A literal `$` is `$$`, which the font cannot show (blank).
 
 | Write | Meaning |
 |---|---|
