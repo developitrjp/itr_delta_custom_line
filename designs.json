@@ -1,0 +1,94 @@
+{
+ "designs": [
+  {
+    "title": "Default",
+    "author": "ITR DELTA",
+    "colour": 0,
+    "aligns": [1, 1, 0, 2, 2, 1, 1, 1, 1],
+    "discussion": "",
+    "customs": [
+      " $W $02M-$02D ",
+      "GMT $02g:$02n",
+      "$a (BIG, $02h:$02m)",
+      "$02s",
+      "(GAUGE, 12, $s, 0, 60)",
+      "BATT (GAUGE, 10, $A)",
+      "AP(GRAPH, 5, $P) O2(GRAPH, 5, $O)",
+      "STEP (GAUGE, 8, $S, 0, 10000)",
+      "HR $03H__$03R"
+    ]
+  },
+  {
+    "title": "Message",
+    "author": "ITR DELTA",
+    "colour": 3,
+    "aligns": [1, 1, 1, 1, 1, 1, 1, 1, 1],
+    "discussion": "",
+    "customs": [
+      "THIS",
+      "WATCHFACE IS",
+      "EXTREMELY",
+      "CUSTOMIZABLE",
+      "",
+      "ANY DESIGN",
+      "IS POSSIBLE",
+      "",
+      ""
+    ]
+  },
+  {
+    "title": "World time",
+    "author": "ITR DELTA",
+    "colour": 1,
+    "aligns": [1, 1, 1, 1, 1, 1, 1, 1, 1],
+    "discussion": "",
+    "customs": [
+      "WORLD TIME",
+      "LA$|$02{($k + 7) % 24}:$02m",
+      "NY$|$02{($k + 10) % 24}:$02m",
+      "LON$|$02{($k + 15) % 24}:$02m",
+      "(BIG, $02h:$02m)",
+      "",
+      "TOKYO",
+      "$Y-$02M-$02D",
+      "$a"
+    ]
+  },
+  {
+    "title": "Gauges and graphs",
+    "author": "ITR DELTA",
+    "colour": 0,
+    "aligns": [1, 1, 1, 1, 1, 1, 1, 1, 1],
+    "discussion": "",
+    "customs": [
+      "(WIDE, $02h:$02m)",
+      "BATT (GAUGE, 8, $A)",
+      "STEP (GAUGE, 10, $S, 0, 10000)",
+      "HR(GRAPH, 13, $H)",
+      "AP(GRAPH, 13, $P)",
+      "O2(GRAPH, 13, $O)",
+      "BB(GRAPH, 13, $B)",
+      "HR $H$|RHR $R",
+      "CAL $C"
+    ]
+  },
+  {
+    "title": "Sizes and alignment",
+    "author": "ITR DELTA",
+    "colour": 2,
+    "aligns": [1, 1, 1, 1, 0, 1, 2, 2, 1],
+    "discussion": "",
+    "customs": [
+      "NORMAL",
+      "(WIDE, WIDE)",
+      "(BIG, BIG)",
+      "",
+      "LEFT",
+      "CENTRE",
+      "RIGHT",
+      "$|:$02s",
+      ""
+    ]
+  }
+ ]
+}
