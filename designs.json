@@ -89,6 +89,23 @@
       "$|:$02s",
       ""
     ]
-  }
+  },
+  {
+    "title": "Example #01",
+    "author": "ITR DELTA",
+    "colour": 0,
+    "aligns": [1, 1, 0, 0, 0, 0, 0, 0, 1],
+    "discussion": "",
+    "customs": [
+      "$02M-$02D ($W)",
+      "",
+      "UK $02g (BIG, $02h:$02m)",
+      "US $02{($g - 6) % 24}",
+      "$a$|(GAUGE, 12, $s, 0, 60)",
+      "HR  $3H$|O2  $3O",
+      "  (GRAPH, 5, $H)$|  (GRAPH, 5, $O)",
+      "STEP $04S(GAUGE, 4, $S, 0, 10000)",
+      "BAT(GAUGE, 8, $A)"
+    ]
  ]
 }
