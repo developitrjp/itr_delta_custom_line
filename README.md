@@ -5,6 +5,7 @@
 > THIS WATCHFACE IS EXTREMELY CUSTOMIZABLE. ANY DESIGN IS POSSIBLE.
 
 - Get it on Garmin Connect IQ: [ITR DELTA](https://apps.garmin.com/apps/4bc2191c-0fc0-4380-b7a0-36d3c6907dc3)
+- Design gallery: **[gallery](https://developitrjp.github.io/itr_delta_custom_line/gallery.html)** - designs made with the checker below; open one in the checker and make it your own
 - How to write the Custom rows: **[CUSTOM_STRING.md](CUSTOM_STRING.md)** (codes, gauges, graphs, WIDE / BIG, alignment, examples and the default settings); Japanese: **[CUSTOM_STRING_ja.md](CUSTOM_STRING_ja.md)** (日本語版)
 
 ## Let an AI write your Custom settings
@@ -26,6 +27,8 @@ The manual contains a section "For AI assistants" with the rules the AI should f
 **[Custom row checker](https://developitrjp.github.io/itr_delta_custom_line/custom_checker.html)**: a single web page (`custom_checker.html`, works offline too: download it and open it in a browser) where you type the nine Custom strings, pick the alignment and see roughly how the watch face will show them, with sample values for time, heart rate, steps and so on. It also warns about strings that are too long, characters that cannot be shown and more than 4 GRAPH items. It is a quick check, not the exact watch rendering.
 
 Share your design: everything you type is stored in the page address, so **Copy share link** gives a URL that opens the same design for anyone. **Download PNG** saves the preview, and **Post to Discussions** opens a new post in the [Discussions](https://github.com/developitrjp/itr_delta_custom_line/discussions) of this repository with your design filled in (attach the PNG there). Look through the posts for ideas, or share your own.
+
+**[Design gallery](https://developitrjp.github.io/itr_delta_custom_line/gallery.html)**: a page that shows a selection of designs (drawn in your browser from `designs.json`). "Open in checker" loads a design into the checker, and each row's **Copy** button copies its setting so you can paste it into Garmin Connect.
 
 This repository holds the manual only; the watch face source code is not published.
 
