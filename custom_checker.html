@@ -462,8 +462,14 @@ const ALIGN_NAMES = ["Left", "Centre", "Right"];
 for (let i = 0; i < 9; i++) {
   const d = document.createElement("div"); d.className = "row";
   d.innerHTML = '<div class="top"><span class="n">Custom' + (i + 1) + " (" + ROWS[i + 1] + ')</span><input type="text" spellcheck="false" autocomplete="off" aria-label="Custom' + (i + 1) +
-    '"><select aria-label="Align' + (i + 1) + '">' + ALIGN_NAMES.map((a, k) => '<option value="' + k + '">' + a + "</option>").join("") + '</select></div><div class="info"></div>';
+    '"><select aria-label="Align' + (i + 1) + '">' + ALIGN_NAMES.map((a, k) => '<option value="' + k + '">' + a + "</option>").join("") + '</select><button type="button" class="cp" title="Copy this row\'s setting (to paste into Garmin Connect)">Copy</button></div><div class="info"></div>';
   rowsEl.appendChild(d);
+  const cpb = d.querySelector(".cp"), cpi = d.querySelector("input");
+  cpb.onclick = () => {
+    const txt = cpi.value, done = ok => { cpb.textContent = ok ? "Copied!" : "Ctrl+C"; setTimeout(() => { cpb.textContent = "Copy"; }, 1500); };
+    const fb = () => { cpi.focus(); cpi.select(); let ok = false; try { ok = document.execCommand("copy"); } catch (e) { } cpi.setSelectionRange(cpi.value.length, cpi.value.length); done(ok); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(() => done(true), fb); else fb();
+  };
   inputs.push(d.querySelector("input")); aligns.push(d.querySelector("select")); infos.push(d.querySelector(".info"));
 }
 function val(id) { return document.getElementById(id); }

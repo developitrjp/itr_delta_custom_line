@@ -107,6 +107,24 @@
       "STEP $04S(GAUGE, 4, $S, 0, 10000)",
       "BAT(GAUGE, 8, $A)"
     ]
+  },
+  {
+    "title": "Example #02",
+    "author": "ITR DELTA",
+    "colour": 1,
+    "aligns": [1, 0, 0, 0, 2, 1, 1, 1, 1],
+    "discussion": "",
+    "customs": [
+      "(BIG,$02h:$02m)",
+      "$a$|$s",
+      "---------------",
+      ":HR $3H:$|O2 $3O:",
+      ":(GRAPH, 6, $H):$|(GRAPH, 6, $O):",
+      "---------------",
+      "BATT:(GAUGE, 5, $A) $03A%",
+      "-------------",
+      "T$3T:AP$4P"
+    ]
   }
  ]
 }
