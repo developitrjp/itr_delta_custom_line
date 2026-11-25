@@ -58,7 +58,7 @@ In the tables below, a displayed text is shown for a sample moment; blanks matte
 The flexible blank is written with two characters: a dollar sign and a vertical bar, `$|` (shown in a list here because the vertical bar breaks Markdown tables). It takes all spare characters of the row (several share them, first ones get the remainder). Example: `NY$|$02{($k - 14) % 24}:$02m`.
 
 Rules:
-- With a width the value never grows past it: larger values stop at all 9s (`$04S` at 12000 steps shows `9999`; a minus sign takes one column). Without a width all digits are shown. No value -> `--` (padded to the width).
+- With a width the value never grows past it: larger values stop at all 9s (`$04S` at 12000 steps shows `9999`; a minus sign takes one column). Without a width all digits are shown. No value -> `--`, or as many dashes as the width (`$04P` -> `----`, `$4P` -> `----`).
 - Negative numbers with zero padding: `$03{$T}` at -5 -> `-05`.
 - `$s` and `$z` (seconds) are blank during MIP sleep (fenix etc. update once a minute).
 - At most 64 characters of the setting are read.
@@ -99,7 +99,7 @@ Example: `$02h:$02m $a` -> `12:32 PM` (12 h) or `12:32` followed by 3 blanks (24
 
 - Integers only: `$X` codes, numbers, `+ - * / %`, parentheses, unary minus. Spaces are allowed.
 - `/` truncates toward zero. `%` is never negative for a positive divisor, so `($k - 9) % 24` wraps correctly (e.g. 3 - 9 -> 18).
-- Division by 0, a missing value, `$W`, `$a`, or a syntax error -> `--`.
+- Division by 0, a missing value, `$W`, `$a`, or a syntax error -> `--` (dashes filling the width when one is given).
 - Time zones: for the zone set as "GMT offset" simply use `$g` / `$n` / `$z` (handles half-hour zones; no math needed). For a second zone, compute from `$g` (offset relative to the GMT setting) or from `$k` (offset relative to the watch's local time). Use `$k`, not `$h`. Hour in zone UTC+z when the watch is at UTC+9: `$02{($k + z - 9 + 24) % 24}` (the `+ 24` is optional because `%` already wraps). Half-hour zones need minute math, e.g. India (+5:30) from Japan (+9): hour `$02{($k * 60 + $m - 210 + 1440) % 1440 / 60}`, minute `$02{($m + 30) % 60}`.
 - Two-digit year: `$02{$Y % 100}`.
 - Day-of-month wrap is NOT handled (the date does not change with a time-zone offset); a foreign date therefore cannot be shown.
@@ -136,7 +136,7 @@ One normal character is 5x7 dots in one cell. `(WIDE, text)` stretches every cha
 - **Overlap rule:** where a lower half lies, it REPLACES whatever the row below has in those cells (its text, gauge or graph). The row below keeps its own content in all other cells. So under a BIG leave the row empty, or put text only outside the BIG's columns (e.g. seconds at the right end).
 - Avoid a BIG in the row directly below another BIG: the lower halves of the first one overwrite part of the second one's upper half. Leave a row between two BIGs.
 - A BIG in Custom9 (the last Custom row) has no free row below (the bottom row is the fixed version label), so it is drawn like WIDE (1 row high). A BIG never touches the row above.
-- AOD: if the row holding the BIG has a time code (e.g. `$02h:$02m`), both of its halves are shown in AOD.
+- AOD: if the BIG itself holds a time code (e.g. `$02h:$02m`), both of its halves are shown in AOD, and the whole row below it (the one holding the lower halves) is shown too, with everything else written in that row.
 
 ## Characters that can be shown
 

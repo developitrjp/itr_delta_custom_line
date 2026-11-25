@@ -280,7 +280,7 @@ function tokText(tok, t) {
     if (k === 1 && tok[1] === "a") return (t.is24 ? "  " : (t.hour24 >= 12 ? "PM" : "AM")).padStart(w, " ");
     if (k === 1 && tok[1] === "W") return WD_NAMES[t.wd].padStart(w, " ");
     const v = k === 1 ? codeNum(tok[1], t) : (tok[1] === null ? null : evalRpn(tok[1], c => codeNum(c, t)));
-    if (v === null) return "--".padStart(w, " ");
+    if (v === null) return w > 0 ? "-".repeat(w) : "--";
     return fmtNum(v, w, tok[2]);
   }
   if (k === 3) {
