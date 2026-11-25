@@ -29,6 +29,7 @@
   .row .top input[type=text] { flex: 1 1 auto; min-width: 0; font: 14px/1.3 ui-monospace, Consolas, monospace; padding: 4px 6px; }
   .info { font-size: 12px; color: #8c8c94; margin: 2px 0 0 5.4em; min-height: 1.2em; }
   .warn { color: #ffb347; }
+  .chk { display: inline-flex; gap: 4px; align-items: center; font-size: 13px; }
   .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
   .hint { font-size: 12px; color: #8c8c94; margin-top: 10px; }
   code { background: #202024; padding: 0 3px; border-radius: 3px; }
@@ -74,12 +75,13 @@
       <button id="b_def">Default settings</button>
       <span id="presets" style="display:contents"></span>
       <button id="b_clear">Clear all</button>
+      <label class="chk" title="Show only what the always-on display (AOD, AMOLED) draws: grey outlines of the rows that show the time"><input type="checkbox" id="c_aod"> AOD preview</label>
       <button id="b_share" title="Copy the address of this page with your design in it">Copy share link</button>
       <button id="b_png" title="Save the preview as a PNG image to attach to your post">Download PNG</button>
       <button id="b_post" title="Open a new GitHub Discussion with your design filled in">Post to Discussions</button>
     </div>
     <div id="rows"></div>
-    <p class="hint">Alignment: where the text sits when it is shorter than the row. Text longer than the row is cut on the right. This is a quick check, not the exact watch rendering (dot sizes and spacing differ a little, and the watch fills in sensor values every few minutes). The strings are saved in this page's address, so you can bookmark or share it.</p>
+    <p class="hint">Alignment: where the text sits when it is shorter than the row. Text longer than the row is cut on the right. This is a quick check, not the exact watch rendering (dot sizes and spacing differ a little, and the watch fills in sensor values every few minutes). The strings are saved in this page's address, so you can bookmark or share it. AOD preview: the rows that show a time code ($h $k $m $a) are drawn as grey outlines, a BIG time also draws the row below it, the GMT codes ($g $n $z) do not count; seconds are shown as 0 because the always-on display updates once a minute.</p>
   </div>
 </main>
 <script>
@@ -91,6 +93,7 @@ const ROWS = [9, 11, 13, 15, 15, 15, 15, 15, 13, 11, 9];
 const NROWS = ROWS.length;
 const CUSTOM_MAX = 64;
 const CODES = "HRSCBATPOWhkmsYMDgnzIa";
+const CODES_TIME = "hkma";   // a row with one of these codes is drawn in AOD (the GMT codes g n z are not time codes)
 const GRAPH_STEP = 720;
 const GRAPH_KIND = { H: 18, P: 19, O: 21, B: 24, I: 25 };
 const GRAPH_SRC = { 18: "hrg", 19: "prg", 21: "sg", 24: "bbg", 25: "tg" };
@@ -348,16 +351,30 @@ function customCells(s, n, t, last) {
   });
   return [out, graphs, toks];
 }
+// AOD (mirrors hasTime / hasBigTime in the watch face): a row that shows a time code is drawn; a BIG time covers two rows, so the row below it is drawn too
+function hasTime(toks) {
+  for (const x of toks) {
+    if (!Array.isArray(x)) continue;
+    if (x[0] === 1 && CODES_TIME.includes(x[1])) return true;
+    if (x[0] === 2 && x[1] && x[1].some(e => Array.isArray(e) && CODES_TIME.includes(e[1]))) return true;
+    if (x[0] === 6 && hasTime(x[2])) return true;
+  }
+  return false;
+}
+function hasBigTime(toks) { return toks.some(x => Array.isArray(x) && x[0] === 6 && x[1] === 2 && hasTime(x[2])); }
 function faceBits(customs, aligns, t) {
-  const bits = [], lower = [], info = [];
+  const bits = [], lower = [], info = [], mask = [];
+  let prevT = false, prevBig = false;
   for (let r = 0; r < NROWS; r++) {
     const n = ROWS[r];
-    if (r === 0 || r === NROWS - 1) { bits.push(Array.from({ length: n }, () => [0, 0, 0, 0, 0, 0, 0])); lower.push([]); info.push(null); continue; }
+    if (r === 0 || r === NROWS - 1) { bits.push(Array.from({ length: n }, () => [0, 0, 0, 0, 0, 0, 0])); lower.push([]); info.push(null); mask.push(null); continue; }
     const [cells, graphs, toks] = customCells(customs[r - 1] || "", n, t, r === NROWS - 2);
     const al = aligns[r - 1];
     const m = Math.min(cells.length, n);
     const c0 = al === 0 ? 0 : (al === 2 ? n - m : Math.floor((n - m) / 2));
     const rb = Array.from({ length: n }, () => [0, 0, 0, 0, 0, 0, 0]), low = [];
+    const cT = hasTime(toks), bigT = r !== NROWS - 2 && hasBigTime(toks), inAod = cT || prevBig;
+    const ma = new Array(n).fill(inAod);
     cells.forEach(([ch, q], k) => {
       const c = c0 + k;
       if (c >= n) return;
@@ -373,12 +390,13 @@ function faceBits(customs, aligns, t) {
     }
     if (r > 0) {
       const off = Math.floor((n - ROWS[r - 1]) / 2);
-      for (const [c, ch, q] of lower[lower.length - 1]) { const cc = c + off; if (cc >= 0 && cc < n) rb[cc] = cellBits(ch, q); }
+      for (const [c, ch, q] of lower[lower.length - 1]) { const cc = c + off; if (cc >= 0 && cc < n) { rb[cc] = cellBits(ch, q); ma[cc] = prevT; } }
     }
-    bits.push(rb); lower.push(low);
-    info.push({ cells: cells.length, toks, n });
+    bits.push(rb); lower.push(low); mask.push(ma);
+    info.push({ cells: cells.length, toks, n, aod: inAod });
+    prevT = cT; prevBig = bigT;
   }
-  return { bits, info };
+  return { bits, info, mask };
 }
 
 // ---- layout / drawing (same proportions as the watch face) -------------------------------------------------------------
@@ -392,7 +410,7 @@ function kFit() {
   return (1 - MARGIN) / worst;
 }
 const K = kFit();
-function draw(cv, fb, colour) {
+function draw(cv, fb, colour, aod) {
   const size = cv.width, R = size / 2, ctx = cv.getContext("2d");
   ctx.clearRect(0, 0, size, size);
   ctx.fillStyle = "#000"; ctx.fillRect(0, 0, size, size);
@@ -405,6 +423,20 @@ function draw(cv, fb, colour) {
     const w = (n - 1) * aa + 4 * pp + qq, h = 6 * pp + qq;
     const x0 = R - w / 2, y0 = R + (r - mid) * STEP * p - h / 2;
     let bits = fb.bits[r];
+    if (aod) {          // AOD: grey outlines of the lit squares of the rows that are shown, nothing else
+      const ma = fb.mask[r];
+      if (small || !ma) continue;
+      ctx.strokeStyle = "#a0a0a0"; ctx.lineWidth = Math.max(1, qq * 0.18);
+      for (let c = 0; c < n; c++) {
+        if (!ma[c]) continue;
+        for (let row = 0; row < 7; row++) for (let b = 0; b < 5; b++) {
+          if ((bits[c][row] & (0x10 >> b)) === 0) continue;
+          const x = x0 + c * aa + b * pp, y = y0 + row * pp, lw = ctx.lineWidth;
+          ctx.beginPath(); ctx.roundRect(x + lw / 2, y + lw / 2, qq - lw, qq - lw, qq * 0.18); ctx.stroke();
+        }
+      }
+      continue;
+    }
     if (small) {
       const txt = fixedText[r], len = txt.length, off = Math.floor((n - len) / 2);
       bits = Array.from({ length: n }, (_, c) => (c >= off && c < off + len) ? glyph(txt[c - off]) : [0, 0, 0, 0, 0, 0, 0]);
@@ -455,18 +487,20 @@ function sample() {
     bbg: rep([7, 7, 6, 6, 5, 5, 4, 4, 3, 3, 2, 2, 1, 1, 1, 2, 3, 4, 5, 6, 7, 7, 7, 6, 6]),
     tg: rep([2, 2, 1, 1, 0, 0, 1, 2, 3, 4, 5, 6, 7, 7, 6, 6, 5, 5, 4, 4, 3, 3, 3, 2, 2]),
   };
+  if (val("c_aod").checked) T.sec = 0;      // AOD updates once a minute
   return T;
 }
 function update() {
   const customs = inputs.map(i => i.value), al = aligns.map(s => parseInt(s.value, 10));
   const fb = faceBits(customs, al, sample());
-  draw(cv, fb, ACCENT[val("colour").value]);
+  draw(cv, fb, ACCENT[val("colour").value], val("c_aod").checked);
   let graphs = 0;
   fb.info.forEach((inf, r) => {
     if (!inf) return;
     const el = infos[r - 1], msgs = [];
     inf.toks.forEach(x => { if (Array.isArray(x) && x[0] === 4) graphs++; });
     const over = inf.cells > inf.n;
+    if (inf.aod) msgs.push("shown in AOD");
     msgs.push('<span class="' + (over ? "warn" : "") + '">' + inf.cells + " / " + inf.n + " cells" + (over ? " - the end is cut" : "") + "</span>");
     const bad = new Set();
     inf.toks.forEach(x => { if (typeof x === "string") for (const c of x) if (DOT_CHARS.indexOf(c) < 0) bad.add(c); });
