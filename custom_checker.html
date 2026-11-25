@@ -123,7 +123,7 @@ function parseCustom(s) {
   while (i < n) {
     const c = ch[i];
     let tok = null, nxt = i + 1;
-    if ((c === "$" || c === "\\") && i + 1 < n) {
+    if (c === "$" && i + 1 < n) {
       let j = i + 1, zero = false, w = 0;
       if (ch[j] === "0") { zero = true; j++; }
       while (j < n && isDig(ch[j])) { w = w * 10 + (+ch[j]); j++; }
@@ -162,7 +162,7 @@ function compileExpr(ch, a, b) {
       while (i < b && isDig(ch[i])) { num = num * 10 + (+ch[i]); i++; }
       out.push(num); prev = true; continue;
     }
-    if (c === "$" || c === "\\") {
+    if (c === "$") {
       if (prev || i + 1 >= b || "Wa".includes(ch[i + 1]) || !CODES.includes(ch[i + 1])) return null;
       out.push(["c", ch[i + 1]]); prev = true; i += 2; continue;
     }
