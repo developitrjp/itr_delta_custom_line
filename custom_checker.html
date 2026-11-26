@@ -78,11 +78,12 @@
       <label class="chk" title="Show only what the always-on display (AOD, AMOLED) draws: grey outlines of the rows that show the time"><input type="checkbox" id="c_aod"> AOD preview</label>
       <button id="b_share" title="Copy the address of this page with your design in it">Copy share link</button>
       <button id="b_code" title="Copy a design code: paste it into the Design code setting of the watch face in Garmin Connect, Save, and after the next sync all rows, alignments and the colour are filled in">Copy design code</button>
+      <input type="text" id="t_code" placeholder="Paste a design code here" size="20" spellcheck="false" autocomplete="off" aria-label="Design code"><button id="b_load" title="Load the design code into the rows below">Load code</button>
       <button id="b_png" title="Save the preview as a PNG image to attach to your post">Download PNG</button>
       <button id="b_post" title="Open a new GitHub Discussion with your design filled in">Post to Discussions</button>
     </div>
     <div id="rows"></div>
-    <p class="hint">Alignment: where the text sits when it is shorter than the row. Text longer than the row is cut on the right. This is a quick check, not the exact watch rendering (dot sizes and spacing differ a little, and the watch fills in sensor values every few minutes). The strings are saved in this page's address, so you can bookmark or share it. Design code: press "Copy design code", paste it into the last setting of the watch face in Garmin Connect (Design code), Save, and after the next sync the nine rows, the alignments and the colour are filled in on the watch and in the settings (the field is emptied afterwards; an "ERROR ..." text means the code was not accepted). AOD preview: the rows that show a time code ($h $k $m $a) are drawn as grey outlines, a BIG time also draws the row below it, the GMT codes ($g $n $z) do not count; seconds are shown as 0 because the always-on display updates once a minute.</p>
+    <p class="hint">Alignment: where the text sits when it is shorter than the row. Text longer than the row is cut on the right. This is a quick check, not the exact watch rendering (dot sizes and spacing differ a little, and the watch fills in sensor values every few minutes). The strings are saved in this page's address, so you can bookmark or share it. Design code: "Load code" fills the rows from a code you paste into the box next to it. To use one on the watch, press "Copy design code", paste it into the last setting of the watch face in Garmin Connect (Design code), Save, and after the next sync the nine rows, the alignments and the colour are filled in on the watch and in the settings (the field is emptied afterwards; an "ERROR ..." text means the code was not accepted). AOD preview: the rows that show a time code ($h $k $m $a) are drawn as grey outlines, a BIG time also draws the row below it, the GMT codes ($g $n $z) do not count; seconds are shown as 0 because the always-on display updates once a minute.</p>
   </div>
 </main>
 <script>
@@ -408,6 +409,27 @@ function designCode(customs, aligns, colour) {
   customs.forEach((c, i) => { s += rec(String(i + 1), Array.from(c).slice(0, 64).join("")); });
   return s;
 }
+// the same checks as ItrDeltaCfg.decodeDesign on the watch: -> { error } or { customs[9] (null = not in the code), aligns (null) , colour (null) }
+function parseDesignCode(code) {
+  const ch = Array.from(code.replace(/^[ \n\r\t]+/, "")), b = ch.length;
+  if (b < 6 || ch.slice(0, 6).join("") !== "ITRD1:") return { error: "this is not a design code (it must start with ITRD1:)" };
+  const out = { customs: new Array(9).fill(null), aligns: null, colour: null };
+  let i = 6;
+  while (i < b) {
+    const tag = ch[i++];
+    if (" \n\r\t".includes(tag)) continue;
+    let len = 0, nd = 0;
+    while (i < b && ch[i] >= "0" && ch[i] <= "9") { len = len * 10 + (+ch[i]); i++; nd++; if (len > 999) return { error: "bad length" }; }
+    if (nd === 0 || i >= b || ch[i] !== ":") return { error: "the code is damaged (format)" };
+    i++;
+    if (i + len > b) return { error: "the code is cut short: copy the whole code" };
+    const v = ch.slice(i, i + len).join(""); i += len;
+    if (tag >= "1" && tag <= "9") out.customs[+tag - 1] = Array.from(v).slice(0, CUSTOM_MAX).join("");
+    else if (tag === "A") { if (!/^[0-3]$/.test(v)) return { error: "bad colour" }; out.colour = v; }
+    else if (tag === "L") { if (!/^[0-2]{9}$/.test(v)) return { error: "bad alignment list" }; out.aligns = Array.from(v, Number); }
+  }
+  return out;
+}
 function copyText(txt, done) {
   const fb = () => { const t = document.createElement("textarea"); t.value = txt; document.body.appendChild(t); t.select(); let ok = false; try { ok = document.execCommand("copy"); } catch (e) { } document.body.removeChild(t); done(ok); };
   if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(() => done(true), fb); else fb();
@@ -555,6 +577,17 @@ document.getElementById("b_code").onclick = () => {
   update();
   copyText(designCode(inputs.map(i => i.value), aligns.map(s => parseInt(s.value, 10)), val("colour").value), ok => { b.textContent = ok ? "Code copied!" : "Copy failed"; setTimeout(() => { b.textContent = "Copy design code"; }, 2000); });
 };
+document.getElementById("b_load").onclick = () => {
+  const b = document.getElementById("b_load"), t = document.getElementById("t_code");
+  const r = parseDesignCode(t.value);
+  const msg = s => { b.textContent = s; setTimeout(() => { b.textContent = "Load code"; }, 2500); };
+  if (r.error) { msg(r.error); return; }
+  r.customs.forEach((c, k) => { if (c !== null) inputs[k].value = c; });
+  if (r.aligns) r.aligns.forEach((a, k) => { aligns[k].value = a; });
+  if (r.colour !== null) val("colour").value = r.colour;
+  t.value = ""; update(); msg("Loaded!");
+};
+document.getElementById("t_code").addEventListener("keydown", e => { if (e.key === "Enter") document.getElementById("b_load").click(); });
 document.getElementById("b_png").onclick = () => {
   update();
   const c = document.getElementById("cv");

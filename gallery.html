@@ -353,6 +353,27 @@ function designCode(customs, aligns, colour) {
   customs.forEach((c, i) => { s += rec(String(i + 1), Array.from(c).slice(0, 64).join("")); });
   return s;
 }
+// the same checks as ItrDeltaCfg.decodeDesign on the watch: -> { error } or { customs[9] (null = not in the code), aligns (null) , colour (null) }
+function parseDesignCode(code) {
+  const ch = Array.from(code.replace(/^[ \n\r\t]+/, "")), b = ch.length;
+  if (b < 6 || ch.slice(0, 6).join("") !== "ITRD1:") return { error: "this is not a design code (it must start with ITRD1:)" };
+  const out = { customs: new Array(9).fill(null), aligns: null, colour: null };
+  let i = 6;
+  while (i < b) {
+    const tag = ch[i++];
+    if (" \n\r\t".includes(tag)) continue;
+    let len = 0, nd = 0;
+    while (i < b && ch[i] >= "0" && ch[i] <= "9") { len = len * 10 + (+ch[i]); i++; nd++; if (len > 999) return { error: "bad length" }; }
+    if (nd === 0 || i >= b || ch[i] !== ":") return { error: "the code is damaged (format)" };
+    i++;
+    if (i + len > b) return { error: "the code is cut short: copy the whole code" };
+    const v = ch.slice(i, i + len).join(""); i += len;
+    if (tag >= "1" && tag <= "9") out.customs[+tag - 1] = Array.from(v).slice(0, CUSTOM_MAX).join("");
+    else if (tag === "A") { if (!/^[0-3]$/.test(v)) return { error: "bad colour" }; out.colour = v; }
+    else if (tag === "L") { if (!/^[0-2]{9}$/.test(v)) return { error: "bad alignment list" }; out.aligns = Array.from(v, Number); }
+  }
+  return out;
+}
 function copyText(txt, done) {
   const fb = () => { const t = document.createElement("textarea"); t.value = txt; document.body.appendChild(t); t.select(); let ok = false; try { ok = document.execCommand("copy"); } catch (e) { } document.body.removeChild(t); done(ok); };
   if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(() => done(true), fb); else fb();
