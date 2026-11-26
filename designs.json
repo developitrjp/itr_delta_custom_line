@@ -125,6 +125,24 @@
       "-------------",
       "T$3T:AP$4P"
     ]
+  },
+  {
+    "title": "BarTime",
+    "author": "ITR DELTA",
+    "colour": 1,
+    "aligns": [0, 0, 0, 0, 0, 1, 1, 1, 1],
+    "discussion": "",
+    "customs": [
+      "$Y-$M-$D$W",
+      "",
+      "H  (GAUGE, 12, {$h%12},0,12)$h",
+      "M  (GAUGE, 12, $m,0,60)$m",
+      "S$|(GAUGE, 12, $s,0,60)",
+      "",
+      " HR$3H$|RHR$3R ",
+      "AP $4P",
+      "TEMP $3T"
+    ]
   }
  ]
 }
