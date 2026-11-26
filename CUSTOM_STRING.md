@@ -138,6 +138,16 @@ One normal character is 5x7 dots in one cell. `(WIDE, text)` stretches every cha
 - A BIG in Custom9 (the last Custom row) has no free row below (the bottom row is the fixed version label), so it is drawn like WIDE (1 row high). A BIG never touches the row above.
 - AOD: if the BIG itself holds a time code (e.g. `$02h:$02m`), both of its halves are shown in AOD, and the whole row below it (the one holding the lower halves) is shown too, with everything else written in that row.
 
+## Design code (paste a whole design at once)
+
+The [Custom row checker](https://developitrjp.github.io/itr_delta_custom_line/custom_checker.html) and the [gallery](https://developitrjp.github.io/itr_delta_custom_line/gallery.html) have a **Copy design code** button. The code holds the nine Custom strings, the nine alignments and the colour (it starts with `ITRD1:`).
+
+1. Press **Copy design code** for your design in the checker, or for a design in the gallery.
+2. In Garmin Connect open the watch face settings and paste the code into the last setting, **Design code**. Save.
+3. After the next sync of the watch, Custom1..Custom9, Align1..Align9 and the colour are set from the code, on the watch and in the settings, and the Design code field is empty again. If it says `ERROR ...` instead, the code was not accepted (copy it again whole: it must not be cut or changed).
+
+Do not save other changes in Garmin Connect before the sync has finished, or the old values may be sent back. Design codes are made by the checker (the lengths inside must be exact), so an AI assistant should not write them by hand: give the strings to the user as usual.
+
 ## Characters that can be shown
 
 `0-9`, `A-Z` (all letters), space, and `: - % . / + ° ( ) , ! ? = ' * # < > _`. Anything else (including `$` and `\` themselves, `&`, `@`, `[`, `]`, `{` `}` as text, non-ASCII except `°`) is shown as a blank. Lower case letters are converted to upper case. Use replacements such as `°` for `deg` or `+` for `&`. (The fixed bottom label `-<VERSION>-` is always shown in upper case, too.)

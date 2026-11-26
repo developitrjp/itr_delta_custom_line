@@ -77,11 +77,12 @@
       <button id="b_clear">Clear all</button>
       <label class="chk" title="Show only what the always-on display (AOD, AMOLED) draws: grey outlines of the rows that show the time"><input type="checkbox" id="c_aod"> AOD preview</label>
       <button id="b_share" title="Copy the address of this page with your design in it">Copy share link</button>
+      <button id="b_code" title="Copy a design code: paste it into the Design code setting of the watch face in Garmin Connect, Save, and after the next sync all rows, alignments and the colour are filled in">Copy design code</button>
       <button id="b_png" title="Save the preview as a PNG image to attach to your post">Download PNG</button>
       <button id="b_post" title="Open a new GitHub Discussion with your design filled in">Post to Discussions</button>
     </div>
     <div id="rows"></div>
-    <p class="hint">Alignment: where the text sits when it is shorter than the row. Text longer than the row is cut on the right. This is a quick check, not the exact watch rendering (dot sizes and spacing differ a little, and the watch fills in sensor values every few minutes). The strings are saved in this page's address, so you can bookmark or share it. AOD preview: the rows that show a time code ($h $k $m $a) are drawn as grey outlines, a BIG time also draws the row below it, the GMT codes ($g $n $z) do not count; seconds are shown as 0 because the always-on display updates once a minute.</p>
+    <p class="hint">Alignment: where the text sits when it is shorter than the row. Text longer than the row is cut on the right. This is a quick check, not the exact watch rendering (dot sizes and spacing differ a little, and the watch fills in sensor values every few minutes). The strings are saved in this page's address, so you can bookmark or share it. Design code: press "Copy design code", paste it into the last setting of the watch face in Garmin Connect (Design code), Save, and after the next sync the nine rows, the alignments and the colour are filled in on the watch and in the settings (the field is emptied afterwards; an "ERROR ..." text means the code was not accepted). AOD preview: the rows that show a time code ($h $k $m $a) are drawn as grey outlines, a BIG time also draws the row below it, the GMT codes ($g $n $z) do not count; seconds are shown as 0 because the always-on display updates once a minute.</p>
   </div>
 </main>
 <script>
@@ -399,6 +400,19 @@ function faceBits(customs, aligns, t) {
   return { bits, info, mask };
 }
 
+// ---- design code: "ITRD1:" + records tag(1 char) + length + ":" + value. Tags 1..9 = Custom1..9, A = colour (0..3), L = the 9 alignments (0..2) -------
+// The watch decodes it (ItrDeltaCfg.applyDesignCode); unknown tags are skipped by older apps, so new records can be added later.
+function designCode(customs, aligns, colour) {
+  const rec = (t, v) => t + Array.from(v).length + ":" + v;
+  let s = "ITRD1:" + rec("A", String(colour)) + rec("L", aligns.map(a => String(a)).join(""));
+  customs.forEach((c, i) => { s += rec(String(i + 1), Array.from(c).slice(0, 64).join("")); });
+  return s;
+}
+function copyText(txt, done) {
+  const fb = () => { const t = document.createElement("textarea"); t.value = txt; document.body.appendChild(t); t.select(); let ok = false; try { ok = document.execCommand("copy"); } catch (e) { } document.body.removeChild(t); done(ok); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(() => done(true), fb); else fb();
+}
+
 // ---- layout / drawing (same proportions as the watch face) -------------------------------------------------------------
 const SQ = 0.75, ADV = 5.5, STEP = 8.0, MARGIN = 0.02, SMALL_K = 0.70;
 const OFF = "#24242a", GREYLIT = "#b0b0b8";
@@ -536,6 +550,11 @@ document.getElementById("b_share").onclick = () => {
 const PAGE_URL = "https://developitrjp.github.io/itr_delta_custom_line/custom_checker.html";
 const DISC_NEW = "https://github.com/developitrjp/itr_delta_custom_line/discussions/new";
 const DISC_CATEGORY = "show-and-tell";
+document.getElementById("b_code").onclick = () => {
+  const b = document.getElementById("b_code");
+  update();
+  copyText(designCode(inputs.map(i => i.value), aligns.map(s => parseInt(s.value, 10)), val("colour").value), ok => { b.textContent = ok ? "Code copied!" : "Copy failed"; setTimeout(() => { b.textContent = "Copy design code"; }, 2000); });
+};
 document.getElementById("b_png").onclick = () => {
   update();
   const c = document.getElementById("cv");

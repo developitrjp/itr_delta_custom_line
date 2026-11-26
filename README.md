@@ -28,7 +28,7 @@ The manual contains a section "For AI assistants" with the rules the AI should f
 
 Share your design: everything you type is stored in the page address, so **Copy share link** gives a URL that opens the same design for anyone. **Download PNG** saves the preview, and **Post to Discussions** opens a new post in the [Discussions](https://github.com/developitrjp/itr_delta_custom_line/discussions) of this repository with your design filled in (attach the PNG there). Look through the posts for ideas, or share your own.
 
-**[Design gallery](https://developitrjp.github.io/itr_delta_custom_line/gallery.html)**: a page that shows a selection of designs (drawn in your browser from `designs.json`). "Open in checker" loads a design into the checker, and each row's **Copy** button copies its setting so you can paste it into Garmin Connect.
+**[Design gallery](https://developitrjp.github.io/itr_delta_custom_line/gallery.html)**: a page that shows a selection of designs (drawn in your browser from `designs.json`). "Open in checker" loads a design into the checker, and each row's **Copy** button copies its setting so you can paste it into Garmin Connect. **Copy design code** (checker and gallery) copies a whole design (nine rows, alignments, colour) as one code: paste it into the last setting of the watch face, **Design code**, in Garmin Connect, save, and after the next sync everything is filled in.
 
 This repository holds the manual only; the watch face source code is not published.
 
