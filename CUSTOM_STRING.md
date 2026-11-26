@@ -146,7 +146,7 @@ The [Custom row checker](https://developitrjp.github.io/itr_delta_custom_line/cu
 2. In Garmin Connect open the watch face settings and paste the code into the last setting, **Design code**. Save.
 3. After the next sync of the watch, Custom1..Custom9, Align1..Align9 and the colour are set from the code, on the watch and in the settings, and the Design code field is empty again. If it says `ERROR ...` instead, the code was not accepted (copy it again whole: it must not be cut or changed).
 
-The checker also reads codes: paste a code into the box next to the button and press **Load code**, and the rows, alignments and colour of the checker are set from it (a code you copied from the gallery, or from a Discussions post).
+The checker also reads codes: paste a code into the **Design code** box below Custom9 and press **Load code**, and the rows, alignments and colour of the checker are set from it (a code you copied from the gallery, or from a Discussions post).
 
 Do not save other changes in Garmin Connect before the sync has finished, or the old values may be sent back. Design codes are made by the checker (the lengths inside must be exact), so an AI assistant should not write them by hand: give the strings to the user as usual.
 
