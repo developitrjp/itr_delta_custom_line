@@ -35,10 +35,11 @@
 "use strict";
 const DOT_CHARS = "0123456789ABCDEFGHILMNOPRSTUW:-JKQVXYZ%./+°(),!?='*#<>abcdef_p ";
 const DOT_FONT = [[14, 17, 17, 17, 17, 17, 14], [4, 12, 4, 4, 4, 4, 4], [14, 17, 1, 14, 16, 16, 31], [14, 17, 1, 14, 1, 17, 14], [2, 6, 10, 18, 31, 2, 2], [31, 16, 16, 30, 1, 17, 14], [14, 17, 16, 30, 17, 17, 14], [31, 1, 2, 2, 4, 4, 4], [14, 17, 17, 14, 17, 17, 14], [14, 17, 17, 15, 1, 17, 14], [14, 17, 17, 31, 17, 17, 17], [30, 17, 17, 30, 17, 17, 30], [14, 17, 16, 16, 16, 17, 14], [30, 17, 17, 17, 17, 17, 30], [31, 16, 16, 30, 16, 16, 31], [31, 16, 16, 30, 16, 16, 16], [14, 17, 16, 23, 17, 17, 15], [17, 17, 17, 31, 17, 17, 17], [4, 4, 4, 4, 4, 4, 4], [16, 16, 16, 16, 16, 16, 31], [17, 27, 21, 17, 17, 17, 17], [17, 25, 25, 21, 19, 19, 17], [14, 17, 17, 17, 17, 17, 14], [30, 17, 17, 30, 16, 16, 16], [30, 17, 17, 30, 20, 18, 17], [14, 17, 16, 14, 1, 17, 14], [31, 4, 4, 4, 4, 4, 4], [17, 17, 17, 17, 17, 17, 14], [17, 17, 17, 21, 21, 21, 10], [0, 4, 4, 0, 4, 4, 0], [0, 0, 0, 14, 0, 0, 0], [7, 2, 2, 2, 2, 18, 12], [17, 18, 20, 24, 20, 18, 17], [14, 17, 17, 17, 21, 18, 13], [17, 17, 17, 17, 17, 10, 4], [17, 17, 10, 4, 10, 17, 17], [17, 17, 10, 4, 4, 4, 4], [31, 1, 2, 4, 8, 16, 31], [24, 25, 2, 4, 8, 19, 3], [0, 0, 0, 0, 0, 12, 12], [0, 1, 2, 4, 8, 16, 0], [0, 4, 4, 31, 4, 4, 0], [12, 18, 18, 12, 0, 0, 0], [2, 4, 8, 8, 8, 4, 2], [8, 4, 2, 2, 2, 4, 8], [0, 0, 0, 0, 12, 4, 8], [4, 4, 4, 4, 4, 0, 4], [14, 17, 1, 2, 4, 0, 4], [0, 0, 31, 0, 31, 0, 0], [12, 4, 8, 0, 0, 0, 0], [0, 4, 21, 14, 21, 4, 0], [10, 10, 31, 10, 31, 10, 10], [2, 4, 8, 16, 8, 4, 2], [8, 4, 2, 1, 2, 4, 8], [31, 17, 0, 0, 0, 17, 31], [31, 17, 16, 16, 16, 17, 31], [31, 17, 24, 24, 24, 17, 31], [31, 17, 28, 28, 28, 17, 31], [31, 17, 30, 30, 30, 17, 31], [31, 17, 31, 31, 31, 17, 31], [0, 0, 0, 0, 0, 0, 31], [0, 30, 17, 17, 30, 16, 16], [0, 0, 0, 0, 0, 0, 0]];
+const DOT_FONT2 = [[14, 17, 17, 17, 17, 17, 14], [4, 12, 4, 4, 4, 4, 4], [14, 17, 1, 14, 16, 16, 31], [14, 17, 1, 14, 1, 17, 14], [2, 6, 10, 18, 31, 2, 2], [31, 16, 16, 30, 1, 17, 14], [14, 17, 16, 30, 17, 17, 14], [31, 1, 2, 2, 4, 4, 4], [14, 17, 17, 14, 17, 17, 14], [14, 17, 17, 15, 1, 17, 14], [14, 17, 17, 31, 17, 17, 17], [30, 17, 17, 30, 17, 17, 30], [14, 17, 16, 16, 16, 17, 14], [30, 17, 17, 17, 17, 17, 30], [31, 16, 16, 30, 16, 16, 31], [31, 16, 16, 30, 16, 16, 16], [14, 17, 16, 23, 17, 17, 15], [17, 17, 17, 31, 17, 17, 17], [4, 4, 4, 4, 4, 4, 4], [16, 16, 16, 16, 16, 16, 31], [17, 27, 21, 17, 17, 17, 17], [17, 25, 25, 21, 19, 19, 17], [14, 17, 17, 17, 17, 17, 14], [30, 17, 17, 30, 16, 16, 16], [30, 17, 17, 30, 20, 18, 17], [14, 17, 16, 14, 1, 17, 14], [31, 4, 4, 4, 4, 4, 4], [17, 17, 17, 17, 17, 17, 14], [17, 17, 17, 21, 21, 21, 10], [0, 4, 4, 0, 4, 4, 0], [0, 0, 0, 14, 0, 0, 0], [7, 2, 2, 2, 2, 18, 12], [17, 18, 20, 24, 20, 18, 17], [14, 17, 17, 17, 21, 18, 13], [17, 17, 17, 17, 17, 10, 4], [17, 17, 10, 4, 10, 17, 17], [17, 17, 10, 4, 4, 4, 4], [31, 1, 2, 4, 8, 16, 31], [24, 25, 2, 4, 8, 19, 3], [0, 0, 0, 0, 0, 12, 12], [0, 1, 2, 4, 8, 16, 0], [0, 4, 4, 31, 4, 4, 0], [12, 18, 18, 12, 0, 0, 0], [2, 4, 8, 8, 8, 4, 2], [8, 4, 2, 2, 2, 4, 8], [0, 0, 0, 0, 12, 4, 8], [4, 4, 4, 4, 4, 0, 4], [14, 17, 1, 2, 4, 0, 4], [0, 0, 31, 0, 31, 0, 0], [12, 4, 8, 0, 0, 0, 0], [0, 4, 21, 14, 21, 4, 0], [10, 10, 31, 10, 31, 10, 10], [2, 4, 8, 16, 8, 4, 2], [8, 4, 2, 1, 2, 4, 8], [31, 17, 0, 0, 0, 17, 31], [31, 17, 16, 16, 16, 17, 31], [31, 17, 24, 24, 24, 17, 31], [31, 17, 28, 28, 28, 17, 31], [31, 17, 30, 30, 30, 17, 31], [31, 17, 31, 31, 31, 17, 31], [0, 0, 0, 0, 0, 0, 31], [0, 30, 17, 17, 30, 16, 16], [0, 0, 0, 0, 0, 0, 0]];
 const ROWS = [9, 11, 13, 15, 15, 15, 15, 15, 13, 11, 9];
 const NROWS = ROWS.length;
 const CUSTOM_MAX = 64;
-const CODES = "HRSCBATPOWhkmsYMDgnzIa";
+const CODES = "HRSCBATPOWhkmsYMDgnzIau";
 const CODES_TIME = "hkma";   // a row with one of these codes is drawn in AOD (the GMT codes g n z are not time codes)
 const GRAPH_STEP = 720;
 const GRAPH_KIND = { H: 18, P: 19, O: 21, B: 24, I: 25 };
@@ -46,9 +47,8 @@ const GRAPH_SRC = { 18: "hrg", 19: "prg", 21: "sg", 24: "bbg", 25: "tg" };
 const GAUGE_RANGE = { O: [80, 100], T: [-10, 40], I: [-10, 40], P: [950, 1050], H: [40, 180] };
 const CUSTOM_VALS = { H: "hr", R: "rhr", S: "steps", C: "cal", B: "bbat", T: "temp", I: "stemp", P: "pres", O: "spo2", A: "bat" };
 const WD_NAMES = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
-const DEFAULTS = [" $W $02M-$02D ", "GMT $02g:$02n", "$a (BIG, $02h:$02m)", "$02s", "(GAUGE, 12, $s, 0, 60)",
-  "BATT (GAUGE, 10, $A)", "AP(GRAPH, 5, $P) O2(GRAPH, 5, $O)", "STEP (GAUGE, 8, $S, 0, 10000)", "HR $03H__$03R"];
-const DEFAULT_ALIGN = [1, 1, 0, 2, 2, 1, 1, 1, 1];
+const DEFAULTS = ["($W)$|$M-$D", "CAL $04C (GAUGE, 4, $C, 0, 4000)", "GMT$02g (BIG, $02h:$02m)", "   $a", "(GAUGE, 12, $s, 0, 60)", "HR  $03H:AP $04P", "(GRAPH, 7, $H):(GRAPH, 7, $P)", "STP $04S (GAUGE, 4, $S, 0, 8000)", "*(GAUGE, 10, $A, 0, 100)"];
+const DEFAULT_ALIGN = [1, 1, 0, 0, 2, 0, 0, 1, 2];
 
 // ---- parser (mirrors tools/preview_segments.py and ItrDeltaView.mc) ------------------------------------------------
 function stripSp(s) { return s.replace(/^ +| +$/g, ""); }
@@ -96,7 +96,7 @@ function parseCustom(s) {
 }
 function exprTok(ch, a, b, zero, w) {
   const rpn = compileExpr(ch, a, b);
-  return [2, rpn, zero, w, rpn !== null && rpn.some(x => Array.isArray(x) && "sz".includes(x[1]))];
+  return [2, rpn, zero, w, rpn !== null && rpn.some(x => Array.isArray(x) && "szu".includes(x[1]))];
 }
 const PREC = { n: 3, "*": 2, "/": 2, "%": 2, "(": 0, "+": 1, "-": 1 };
 function compileExpr(ch, a, b) {
@@ -207,6 +207,7 @@ function codeNum(c, t) {
   if (c === "k") return t.hour24;
   if (c === "m") return t.min;
   if (c === "s" || c === "z") return t.sec;
+  if (c === "u") return t.epoch;               // UNIX time (the checker assumes the watch is at UTC+9)
   if (c === "Y") return t.year;
   if (c === "M") return t.month;
   if (c === "D") return t.day;
@@ -246,9 +247,31 @@ function tokText(tok, t) {
 }
 
 // ---- cells (mirrors tools/delta2.py) --------------------------------------------------------------------------------
-function glyph(ch) { const i = DOT_CHARS.indexOf(ch); return DOT_FONT[i >= 0 ? i : DOT_FONT.length - 1]; }
+// dev: ?font=2 in the page address uses the alternative base font 5x7 MT Pixel (DOT_FONT2) instead of the standard one
+const ALT_FONT = /[?&]font=2/.test(location.search);
+function glyph(ch) { const F = ALT_FONT ? DOT_FONT2 : DOT_FONT, i = DOT_CHARS.indexOf(ch); return F[i >= 0 ? i : F.length - 1]; }
+// dev: ?bigsmooth=1 in the page address adds one dot at diagonal joints of BIG characters (mirrors ItrDeltaView.bigBits)
+const SMOOTH_BIG = /[?&]bigsmooth=1/.test(location.search);
+function bigDots(ch) {
+  const g = glyph(ch), px = (r, c) => (r >= 0 && r < 7 && c >= 0 && c < 5 && (g[r] & (0x10 >> c))) ? 1 : 0;
+  const m = new Array(14).fill(0);
+  for (let r = 0; r < 7; r++) for (let c = 0; c < 5; c++) if (px(r, c)) { m[2 * r] |= 3 << (8 - 2 * c); m[2 * r + 1] |= 3 << (8 - 2 * c); }
+  for (let r = -1; r < 7; r++) for (let c = -1; c < 5; c++) {
+    const a = px(r, c), b = px(r, c + 1), d = px(r + 1, c), e = px(r + 1, c + 1), up = r <= 2;
+    let rr = -1, k = 0;
+    if (a && e && !b && !d) { rr = up ? 2 * r + 1 : 2 * r + 2; k = up ? 2 * c + 2 : 2 * c + 1; }
+    else if (b && d && !a && !e) { rr = up ? 2 * r + 1 : 2 * r + 2; k = up ? 2 * c + 1 : 2 * c + 2; }
+    if (rr >= 0 && rr < 14 && k >= 0 && k < 10) m[rr] |= 1 << (9 - k);
+  }
+  return m;
+}
 function cellBits(ch, q) {
   const g = glyph(ch), hx = Math.floor(q / 3), vy = q % 3;
+  if (SMOOTH_BIG && hx && vy) {
+    const m = bigDots(ch), rows = [];
+    for (let r = 0; r < 7; r++) rows.push((m[(vy - 1) * 7 + r] >> (5 * (2 - hx))) & 0x1F);
+    return rows;
+  }
   const rows = [];
   for (let r = 0; r < 7; r++) rows.push(vy === 0 ? g[r] : g[Math.floor((r + 7 * (vy - 1)) / 2)]);
   if (hx === 0) return rows;
@@ -444,7 +467,7 @@ const ACCENT_NAMES = ["Cyan", "Yellow", "Red", "Orange"];
 function sampleTime() {          // the same fixed sample as the checker opens with
   const rep = a => { const o = []; for (let k = 0; k < 70; k++) o.push(a[k % a.length]); return o; };
   return {
-    year: 2026, month: 11, day: 24, wd: 1, hour24: 10, hour: 10, min: 9, sec: 42, is24: false, gmt: "01:09",
+    year: 2026, month: 11, day: 24, wd: 1, epoch: 1795482582, hour24: 10, hour: 10, min: 9, sec: 42, is24: false, gmt: "01:09",
     hr: 72, rhr: 58, steps: 6500, cal: 1450, bbat: 76, bat: 72, spo2: 97, pres: 1013, temp: 18, stemp: 24,
     hrg: rep([0, 1, 2, 3, 4, 5, 6, 7, 6, 5, 4, 3, 2, 1, 0, 1, 3, 5, 7, 5, 3, 2, 4, 6, 7]),
     prg: rep([7, 7, 6, 6, 5, 5, 4, 4, 3, 3, 2, 2, 1, 1, 0, 0, 1, 2, 3, 4, 5, 5, 6, 6, 7]),

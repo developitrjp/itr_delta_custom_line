@@ -60,7 +60,7 @@ The flexible blank is written with two characters: a dollar sign and a vertical 
 Rules:
 - With a width the value never grows past it: larger values stop at all 9s (`$04S` at 12000 steps shows `9999`; a minus sign takes one column). Without a width all digits are shown. No value -> `--`, or as many dashes as the width (`$04P` -> `----`, `$4P` -> `----`).
 - Negative numbers with zero padding: `$03{$T}` at -5 -> `-05`.
-- `$s` and `$z` (seconds) are blank during MIP sleep (fenix etc. update once a minute).
+- `$s`, `$z` and `$u` (seconds) are blank during MIP sleep (fenix etc. update once a minute).
 - At most 64 characters of the setting are read.
 
 ### Codes
@@ -88,6 +88,7 @@ Values are read in the background one at a time, so a just-changed setting takes
 | g | GMT hour, always 24 h (UTC + the face's "GMT offset" setting, same time as the GMT row) | every update |
 | n | GMT minute | every update |
 | z | GMT second (same as `$s`, offsets are whole minutes) | every update |
+| u | UNIX time: seconds since 1970-01-01 UTC (10 digits; valid until 2038) | every update |
 
 Codes are case sensitive (`$h` hour vs `$H` heart rate, `$M` month vs `$m` minute, `$a` AM/PM vs `$A` battery).
 
@@ -177,15 +178,15 @@ Default settings of ITR DELTA:
 
 | Setting | Default string | Alignment |
 |---|---|---|
-| Custom1 | ` $W $02M-$02D ` | Centre |
-| Custom2 | `GMT $02g:$02n` | Centre |
-| Custom3 | `$a (BIG, $02h:$02m)` | Left |
-| Custom4 | `$02s` | Right |
+| Custom1 | `($W)$\|$M-$D` | Centre |
+| Custom2 | `CAL $04C (GAUGE, 4, $C, 0, 4000)` | Centre |
+| Custom3 | `GMT$02g (BIG, $02h:$02m)` | Left |
+| Custom4 | `   $a` | Left |
 | Custom5 | `(GAUGE, 12, $s, 0, 60)` | Right |
-| Custom6 | `BATT (GAUGE, 10, $A)` | Centre |
-| Custom7 | `AP(GRAPH, 5, $P) O2(GRAPH, 5, $O)` | Centre |
-| Custom8 | `STEP (GAUGE, 8, $S, 0, 10000)` | Centre |
-| Custom9 | `HR $03H__$03R` | Centre |
+| Custom6 | `HR  $03H:AP $04P` | Left |
+| Custom7 | `(GRAPH, 7, $H):(GRAPH, 7, $P)` | Left |
+| Custom8 | `STP $04S (GAUGE, 4, $S, 0, 8000)` | Centre |
+| Custom9 | `*(GAUGE, 10, $A, 0, 100)` | Right |
 
 ## Support
 
