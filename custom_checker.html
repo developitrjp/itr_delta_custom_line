@@ -74,7 +74,8 @@
   <div class="right">
     <fieldset class="grp"><legend>Presets</legend>
       <div class="bar">
-        <button id="b_def">Default settings</button>
+        <button id="b_def">Default</button>
+        <button id="b_prev">Previous Default</button>
         <span id="presets" style="display:contents"></span>
         <button id="b_clear">Clear all</button>
       </div>
@@ -91,6 +92,8 @@
       <div class="bar">
         <label for="colour">Colour</label>
         <select id="colour"><option value="0">Cyan</option><option value="1">Yellow</option><option value="3">Orange</option><option value="2">Red</option></select>
+        <label for="fontsel">Font</label>
+        <select id="fontsel"><option value="2">DELTA FONT</option><option value="1">Classic</option></select>
       </div>
     <div id="rows"></div>
       <div class="bar codebar">
@@ -105,7 +108,7 @@
 "use strict";
 const DOT_CHARS = "0123456789ABCDEFGHILMNOPRSTUW:-JKQVXYZ%./+°(),!?='*#<>abcdef_p ";
 const DOT_FONT = [[14, 17, 17, 17, 17, 17, 14], [4, 12, 4, 4, 4, 4, 4], [14, 17, 1, 14, 16, 16, 31], [14, 17, 1, 14, 1, 17, 14], [2, 6, 10, 18, 31, 2, 2], [31, 16, 16, 30, 1, 17, 14], [14, 17, 16, 30, 17, 17, 14], [31, 1, 2, 2, 4, 4, 4], [14, 17, 17, 14, 17, 17, 14], [14, 17, 17, 15, 1, 17, 14], [14, 17, 17, 31, 17, 17, 17], [30, 17, 17, 30, 17, 17, 30], [14, 17, 16, 16, 16, 17, 14], [30, 17, 17, 17, 17, 17, 30], [31, 16, 16, 30, 16, 16, 31], [31, 16, 16, 30, 16, 16, 16], [14, 17, 16, 23, 17, 17, 15], [17, 17, 17, 31, 17, 17, 17], [4, 4, 4, 4, 4, 4, 4], [16, 16, 16, 16, 16, 16, 31], [17, 27, 21, 17, 17, 17, 17], [17, 25, 25, 21, 19, 19, 17], [14, 17, 17, 17, 17, 17, 14], [30, 17, 17, 30, 16, 16, 16], [30, 17, 17, 30, 20, 18, 17], [14, 17, 16, 14, 1, 17, 14], [31, 4, 4, 4, 4, 4, 4], [17, 17, 17, 17, 17, 17, 14], [17, 17, 17, 21, 21, 21, 10], [0, 4, 4, 0, 4, 4, 0], [0, 0, 0, 14, 0, 0, 0], [7, 2, 2, 2, 2, 18, 12], [17, 18, 20, 24, 20, 18, 17], [14, 17, 17, 17, 21, 18, 13], [17, 17, 17, 17, 17, 10, 4], [17, 17, 10, 4, 10, 17, 17], [17, 17, 10, 4, 4, 4, 4], [31, 1, 2, 4, 8, 16, 31], [24, 25, 2, 4, 8, 19, 3], [0, 0, 0, 0, 0, 12, 12], [0, 1, 2, 4, 8, 16, 0], [0, 4, 4, 31, 4, 4, 0], [12, 18, 18, 12, 0, 0, 0], [2, 4, 8, 8, 8, 4, 2], [8, 4, 2, 2, 2, 4, 8], [0, 0, 0, 0, 12, 4, 8], [4, 4, 4, 4, 4, 0, 4], [14, 17, 1, 2, 4, 0, 4], [0, 0, 31, 0, 31, 0, 0], [12, 4, 8, 0, 0, 0, 0], [0, 4, 21, 14, 21, 4, 0], [10, 10, 31, 10, 31, 10, 10], [2, 4, 8, 16, 8, 4, 2], [8, 4, 2, 1, 2, 4, 8], [31, 17, 0, 0, 0, 17, 31], [31, 17, 16, 16, 16, 17, 31], [31, 17, 24, 24, 24, 17, 31], [31, 17, 28, 28, 28, 17, 31], [31, 17, 30, 30, 30, 17, 31], [31, 17, 31, 31, 31, 17, 31], [0, 0, 0, 0, 0, 0, 31], [0, 30, 17, 17, 30, 16, 16], [0, 0, 0, 0, 0, 0, 0]];
-const DOT_FONT2 = [[14, 17, 17, 17, 17, 17, 14], [4, 12, 4, 4, 4, 4, 4], [14, 17, 1, 14, 16, 16, 31], [14, 17, 1, 14, 1, 17, 14], [2, 6, 10, 18, 31, 2, 2], [31, 16, 16, 30, 1, 17, 14], [14, 17, 16, 30, 17, 17, 14], [31, 1, 2, 2, 4, 4, 4], [14, 17, 17, 14, 17, 17, 14], [14, 17, 17, 15, 1, 17, 14], [14, 17, 17, 31, 17, 17, 17], [30, 17, 17, 30, 17, 17, 30], [14, 17, 16, 16, 16, 17, 14], [30, 17, 17, 17, 17, 17, 30], [31, 16, 16, 30, 16, 16, 31], [31, 16, 16, 30, 16, 16, 16], [14, 17, 16, 23, 17, 17, 15], [17, 17, 17, 31, 17, 17, 17], [4, 4, 4, 4, 4, 4, 4], [16, 16, 16, 16, 16, 16, 31], [17, 27, 21, 17, 17, 17, 17], [17, 25, 25, 21, 19, 19, 17], [14, 17, 17, 17, 17, 17, 14], [30, 17, 17, 30, 16, 16, 16], [30, 17, 17, 30, 20, 18, 17], [14, 17, 16, 14, 1, 17, 14], [31, 4, 4, 4, 4, 4, 4], [17, 17, 17, 17, 17, 17, 14], [17, 17, 17, 21, 21, 21, 10], [0, 4, 4, 0, 4, 4, 0], [0, 0, 0, 14, 0, 0, 0], [7, 2, 2, 2, 2, 18, 12], [17, 18, 20, 24, 20, 18, 17], [14, 17, 17, 17, 21, 18, 13], [17, 17, 17, 17, 17, 10, 4], [17, 17, 10, 4, 10, 17, 17], [17, 17, 10, 4, 4, 4, 4], [31, 1, 2, 4, 8, 16, 31], [24, 25, 2, 4, 8, 19, 3], [0, 0, 0, 0, 0, 12, 12], [0, 1, 2, 4, 8, 16, 0], [0, 4, 4, 31, 4, 4, 0], [12, 18, 18, 12, 0, 0, 0], [2, 4, 8, 8, 8, 4, 2], [8, 4, 2, 2, 2, 4, 8], [0, 0, 0, 0, 12, 4, 8], [4, 4, 4, 4, 4, 0, 4], [14, 17, 1, 2, 4, 0, 4], [0, 0, 31, 0, 31, 0, 0], [12, 4, 8, 0, 0, 0, 0], [0, 4, 21, 14, 21, 4, 0], [10, 10, 31, 10, 31, 10, 10], [2, 4, 8, 16, 8, 4, 2], [8, 4, 2, 1, 2, 4, 8], [31, 17, 0, 0, 0, 17, 31], [31, 17, 16, 16, 16, 17, 31], [31, 17, 24, 24, 24, 17, 31], [31, 17, 28, 28, 28, 17, 31], [31, 17, 30, 30, 30, 17, 31], [31, 17, 31, 31, 31, 17, 31], [0, 0, 0, 0, 0, 0, 31], [0, 30, 17, 17, 30, 16, 16], [0, 0, 0, 0, 0, 0, 0]];
+const DOT_FONT2 = [[15, 17, 17, 17, 17, 17, 30], [12, 4, 4, 4, 4, 4, 4], [15, 1, 1, 31, 16, 16, 31], [15, 1, 1, 15, 1, 1, 30], [1, 17, 17, 31, 1, 1, 1], [15, 16, 16, 31, 1, 1, 30], [15, 16, 16, 31, 17, 17, 30], [15, 1, 1, 2, 2, 2, 2], [15, 17, 17, 31, 17, 17, 30], [15, 17, 17, 31, 1, 1, 30], [15, 17, 17, 31, 17, 17, 16], [14, 17, 17, 30, 17, 17, 30], [15, 16, 16, 16, 16, 16, 30], [28, 18, 17, 17, 17, 17, 30], [15, 16, 16, 31, 16, 16, 30], [15, 16, 16, 30, 16, 16, 16], [15, 16, 16, 23, 17, 17, 30], [1, 17, 17, 31, 17, 17, 16], [4, 4, 4, 4, 4, 4, 4], [0, 16, 16, 16, 16, 16, 30], [1, 17, 27, 21, 17, 17, 16], [1, 17, 25, 21, 19, 17, 16], [14, 17, 17, 17, 17, 17, 14], [14, 17, 17, 30, 16, 16, 16], [14, 17, 17, 30, 18, 17, 16], [15, 16, 16, 14, 1, 1, 30], [15, 4, 4, 4, 4, 4, 4], [1, 17, 17, 17, 17, 17, 30], [1, 17, 17, 21, 21, 21, 26], [0, 12, 0, 0, 0, 12, 0], [0, 0, 0, 14, 0, 0, 0], [1, 1, 1, 1, 1, 17, 14], [1, 18, 20, 24, 20, 18, 18], [12, 18, 17, 17, 21, 18, 28], [1, 17, 17, 17, 9, 5, 2], [1, 17, 10, 4, 10, 17, 16], [1, 17, 10, 4, 4, 4, 4], [15, 1, 2, 4, 8, 16, 30], [24, 25, 2, 4, 8, 19, 3], [0, 0, 0, 0, 0, 12, 12], [0, 1, 2, 4, 8, 16, 0], [0, 4, 4, 31, 4, 4, 0], [12, 18, 18, 12, 0, 0, 0], [4, 8, 8, 8, 8, 8, 4], [4, 2, 2, 2, 2, 2, 4], [0, 0, 0, 0, 12, 4, 8], [4, 4, 4, 4, 4, 0, 4], [14, 17, 1, 2, 4, 0, 4], [0, 0, 31, 0, 31, 0, 0], [12, 4, 8, 0, 0, 0, 0], [14, 27, 17, 17, 17, 17, 31], [0, 10, 31, 31, 14, 4, 0], [2, 4, 8, 16, 8, 4, 2], [8, 4, 2, 1, 2, 4, 8], [31, 0, 17, 0, 17, 0, 31], [31, 16, 17, 16, 17, 16, 31], [31, 24, 25, 24, 25, 24, 31], [31, 28, 29, 28, 29, 28, 31], [31, 30, 31, 30, 31, 30, 31], [31, 31, 31, 31, 31, 31, 31], [0, 0, 0, 0, 0, 0, 31], [0, 14, 17, 17, 30, 16, 16], [0, 0, 0, 0, 0, 0, 0]];
 const PRESETS = [{"file": "02_message.png", "label": "Message", "key": "o", "customs": ["THIS", "WATCHFACE IS", "EXTREMELY", "CUSTOMIZABLE", "", "ANY DESIGN", "IS POSSIBLE", "", ""], "aligns": [1, 1, 1, 1, 1, 1, 1, 1, 1]}, {"file": "03_world_time.png", "label": "World time", "key": "y", "customs": ["WORLD TIME", "LA$|$02{($k + 7) % 24}:$02m", "NY$|$02{($k + 10) % 24}:$02m", "LON$|$02{($k + 15) % 24}:$02m", "(BIG, $02h:$02m)", "", "TOKYO", "$Y-$02M-$02D", "$a"], "aligns": [1, 1, 1, 1, 1, 1, 1, 1, 1]}, {"file": "04_data.png", "label": "Gauges and graphs", "key": "c", "customs": ["(WIDE, $02h:$02m)", "BATT (GAUGE, 8, $A)", "STEP (GAUGE, 10, $S, 0, 10000)", "HR(GRAPH, 13, $H)", "AP(GRAPH, 13, $P)", "O2(GRAPH, 13, $O)", "BB(GRAPH, 13, $B)", "HR $H$|RHR $R", "CAL $C"], "aligns": [1, 1, 1, 1, 1, 1, 1, 1, 1]}, {"file": "05_sizes_align.png", "label": "Sizes and alignment", "key": "r", "customs": ["NORMAL", "(WIDE, WIDE)", "(BIG, BIG)", "", "LEFT", "CENTRE", "RIGHT", "$|:$02s", ""], "aligns": [1, 1, 1, 1, 0, 1, 2, 2, 1]}];
 const ROWS = [9, 11, 13, 15, 15, 15, 15, 15, 13, 11, 9];
 const NROWS = ROWS.length;
@@ -120,6 +123,10 @@ const CUSTOM_VALS = { H: "hr", R: "rhr", S: "steps", C: "cal", B: "bbat", T: "te
 const WD_NAMES = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 const DEFAULTS = ["($W)$|$M-$D", "CAL $04C (GAUGE, 4, $C, 0, 4000)", "GMT$02g (BIG, $02h:$02m)", "   $a", "(GAUGE, 12, $s, 0, 60)", "HR  $03H:AP $04P", "(GRAPH, 7, $H):(GRAPH, 7, $P)", "STP $04S (GAUGE, 4, $S, 0, 8000)", "*(GAUGE, 10, $A, 0, 100)"];
 const DEFAULT_ALIGN = [1, 1, 0, 0, 2, 0, 0, 1, 2];
+// the default design up to V01P4 (11-26), kept as "Previous Default"
+const PREV_DEFAULTS = [" $W $02M-$02D ", "GMT $02g:$02n", "$a (BIG, $02h:$02m)", "$02s", "(GAUGE, 12, $s, 0, 60)",
+  "BATT (GAUGE, 10, $A)", "AP(GRAPH, 5, $P) O2(GRAPH, 5, $O)", "STEP (GAUGE, 8, $S, 0, 10000)", "HR $03H__$03R"];
+const PREV_DEFAULT_ALIGN = [1, 1, 0, 2, 2, 1, 1, 1, 1];
 
 // ---- parser (mirrors tools/preview_segments.py and ItrDeltaView.mc) ------------------------------------------------
 function stripSp(s) { return s.replace(/^ +| +$/g, ""); }
@@ -318,8 +325,8 @@ function tokText(tok, t) {
 }
 
 // ---- cells (mirrors tools/delta2.py) --------------------------------------------------------------------------------
-// dev: ?font=2 in the page address uses the alternative base font 5x7 MT Pixel (DOT_FONT2) instead of the standard one
-const ALT_FONT = /[?&]font=2/.test(location.search);
+// font: DELTA FONT (DOT_FONT2, the default) or Classic (DOT_FONT); the Font list in the page, or ?font=classic / ?font=delta in the address
+let ALT_FONT = !/[?&]font=(1|classic)/.test(location.search);
 function glyph(ch) { const F = ALT_FONT ? DOT_FONT2 : DOT_FONT, i = DOT_CHARS.indexOf(ch); return F[i >= 0 ? i : F.length - 1]; }
 // dev: ?bigsmooth=1 in the page address adds one dot at diagonal joints of BIG characters (mirrors ItrDeltaView.bigBits)
 const SMOOTH_BIG = /[?&]bigsmooth=1/.test(location.search);
@@ -589,7 +596,7 @@ function update() {
     if (customs[r - 1] && inf.toks.some(x => Array.isArray(x) && x[0] === 2 && x[1] === null)) msgs.push('<span class="warn">an expression {...} is invalid (shows --)</span>');
     el.innerHTML = msgs.join(" &middot; ");
   });
-  try { history.replaceState(null, "", "#" + encodeURIComponent(JSON.stringify([customs, al, val("colour").value]))); } catch (e) { }
+  try { history.replaceState(null, "", "#" + encodeURIComponent(JSON.stringify([customs, al, val("colour").value, ALT_FONT ? 2 : 1]))); } catch (e) { }
 }
 function setAll(c, a) { inputs.forEach((i, k) => { i.value = c[k] || ""; }); aligns.forEach((s, k) => { s.value = a[k]; }); }
 document.getElementById("b_def").onclick = () => { setAll(DEFAULTS, DEFAULT_ALIGN); val("colour").value = "0"; update(); };
@@ -649,6 +656,7 @@ document.getElementById("b_post").onclick = () => {
   const q = "?category=" + encodeURIComponent(DISC_CATEGORY) + "&title=" + encodeURIComponent("My design") + "&body=" + encodeURIComponent(body);
   window.open(DISC_NEW + q, "_blank", "noopener");
 };
+document.getElementById("b_prev").onclick = () => { setAll(PREV_DEFAULTS, PREV_DEFAULT_ALIGN); val("colour").value = "0"; update(); };
 document.getElementById("b_clear").onclick = () => { setAll([], DEFAULT_ALIGN.map(() => 1)); update(); };
 document.querySelectorAll("input, select").forEach(e => { e.addEventListener("input", update); e.addEventListener("change", update); });
 // Live clock: date, time and Watch UTC+ follow this computer's clock every second (the three fields are locked meanwhile)
@@ -666,11 +674,13 @@ val("s_live").addEventListener("change", () => {
   if (on) liveTick();
 });
 setInterval(liveTick, 1000);
+document.getElementById("fontsel").value = ALT_FONT ? "2" : "1";
+document.getElementById("fontsel").onchange = () => { ALT_FONT = val("fontsel").value === "2"; update(); };
 let loaded = false;
 try {
   if (location.hash.length > 1) {
     const d = JSON.parse(decodeURIComponent(location.hash.slice(1)));
-    if (Array.isArray(d) && Array.isArray(d[0]) && Array.isArray(d[1])) { setAll(d[0], d[1]); val("colour").value = d[2] || "0"; loaded = true; }
+    if (Array.isArray(d) && Array.isArray(d[0]) && Array.isArray(d[1])) { setAll(d[0], d[1]); val("colour").value = d[2] || "0"; if (d[3] === 1 || d[3] === 2) { ALT_FONT = d[3] === 2; document.getElementById("fontsel").value = String(d[3]); } loaded = true; }
   }
 } catch (e) { }
 if (!loaded) setAll(DEFAULTS, DEFAULT_ALIGN);
